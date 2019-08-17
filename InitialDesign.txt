@@ -1,0 +1,7 @@
+Communication Protocol : grpc
+Client App : Flutter (Android, iOS) [Web future]
+Server : C#
+IDE : Visual Code
+Backend Storage : ???
+  Firebase Realtime Database not worth it
+  Postgress? Free?
