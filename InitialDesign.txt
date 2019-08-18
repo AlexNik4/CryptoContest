@@ -1,7 +1,8 @@
-Communication Protocol : grpc
-Client App : Flutter (Android, iOS) [Web future]
-Server : C#
 IDE : Visual Code
-Backend Storage : ???
-  Firebase Realtime Database not worth it
-  Postgress? Free?
+Client App : Flutter (Android, iOS) [Web future]
+Backend Storage : Cloud Firestore
+
+Server : C# 
+    - for caching FireStore queries to limit cost
+    - for handling Crypto transactions
+Communication Protocol : grpc
