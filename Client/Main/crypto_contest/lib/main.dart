@@ -51,7 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Firestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(doc);
       await transaction.update(doc, {
-        'clickcount': snapshot['clickcount'] + 1
+        'clickcount': snapshot['clickcount'] + 1,
+        'time': Timestamp.now()
       });
     });
   }
@@ -98,7 +99,12 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 if(snapshot.hasData)
                 {
-                  return Text(snapshot.data.documents[0]['clickcount'].toString(),
+                  var doc = snapshot.data.documents[0];
+                  String clickCount = doc['clickcount'].toString();
+                  Timestamp time = doc['time'];
+                  String timeString = time.millisecondsSinceEpoch.toString();
+                  String text = "$clickCount - $timeString";
+                  return Text(text,
                     style: Theme.of(context).textTheme.display1,
                   );
                 }
