@@ -6,4 +6,4 @@ jobs:
     steps:
       - checkout
       - run: flutter channel stable
-      - run: cd Client/Main/crypto_contest && flutter -v build apk --debug
+      - run: cd Client/crypto_contest && flutter -v build apk --debug
