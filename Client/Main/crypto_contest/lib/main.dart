@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,16 +45,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
+  
   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+    var doc = Firestore.instance.collection('number').document('t9c0CaOXTZT0XTxwmrUd');
+    Firestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(doc);
+      await transaction.update(doc, {
+        'clickcount': snapshot['clickcount'] + 1
+      });
     });
   }
 
@@ -94,10 +93,20 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            StreamBuilder(
+              stream: Firestore.instance.collection('number').snapshots(),
+              builder: (context, snapshot) {
+                if(snapshot.hasData)
+                {
+                  return Text(snapshot.data.documents[0]['clickcount'].toString(),
+                    style: Theme.of(context).textTheme.display1,
+                  );
+                }
+                return Text('Loading',
+                    style: Theme.of(context).textTheme.display1,
+                  );
+              }
+            )            
           ],
         ),
       ),
