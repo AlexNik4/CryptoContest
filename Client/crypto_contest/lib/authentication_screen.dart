@@ -31,7 +31,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   child: SizedBox(),
                 ),
                 Expanded(
-                  flex: 8,
+                  flex: 15,
                   child: Column(
                     children: <Widget>[
                       SizedBox(
@@ -42,11 +42,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         style: TextStyle(fontSize: 28, color: Colors.black),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: "Email",
+                          icon:
+                              const Icon(Icons.email, color: Colors.blueAccent),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -64,12 +66,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: "Password",
+                          icon:
+                              const Icon(Icons.lock, color: Colors.blueAccent),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -89,18 +93,22 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      RaisedButton(
-                        splashColor: Colors.blueGrey,
-                        color: Colors.blue,
-                        onPressed: _onLoginPressed,
-                        child:
-                            const Text('Login', style: TextStyle(fontSize: 20)),
+                      ButtonTheme(
+                        minWidth: 100,
+                        height: 42,
+                        child: RaisedButton(
+                          splashColor: Colors.blueGrey,
+                          color: Colors.blue,
+                          onPressed: _onLoginPressed,
+                          child: const Text('Login',
+                              style: TextStyle(fontSize: 22)),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: SizedBox(),
                 ),
               ],
