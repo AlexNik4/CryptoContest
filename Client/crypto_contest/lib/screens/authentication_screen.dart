@@ -1,3 +1,5 @@
+import 'package:crypto_contest/managers/authentication_manager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,9 +14,16 @@ class AuthenticationScreen extends StatefulWidget {
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
   final _formKey = GlobalKey<FormState>();
+  final AuthenticationManager _authMgr = new AuthenticationManager();
 
   void _onLoginPressed() {
-    if (_formKey.currentState.validate()) {}
+    if (_formKey.currentState.validate()) {
+      if (_authMgr.current_user == null) {
+        _authMgr.createUser();
+      } else {
+        print(_authMgr.current_user);
+      }
+    }
   }
 
   @override

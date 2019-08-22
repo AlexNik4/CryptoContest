@@ -1,4 +1,4 @@
-import 'package:crypto_contest/authentication_screen.dart';
+import 'package:crypto_contest/screens/authentication_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -47,15 +47,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
   void _incrementCounter() {
-    var doc = Firestore.instance.collection('number').document('t9c0CaOXTZT0XTxwmrUd');
+    var doc = Firestore.instance
+        .collection('number')
+        .document('t9c0CaOXTZT0XTxwmrUd');
     Firestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(doc);
-      await transaction.update(doc, {
-        'clickcount': snapshot['clickcount'] + 1,
-        'time': Timestamp.now()
-      });
+      await transaction.update(doc,
+          {'clickcount': snapshot['clickcount'] + 1, 'time': Timestamp.now()});
     });
   }
 
@@ -97,24 +96,24 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             StreamBuilder(
-              stream: Firestore.instance.collection('number').snapshots(),
-              builder: (context, snapshot) {
-                if(snapshot.hasData)
-                {
-                  var doc = snapshot.data.documents[0];
-                  String clickCount = doc['clickcount'].toString();
-                  Timestamp time = doc['time'];
-                  String timeString = time.millisecondsSinceEpoch.toString();
-                  String text = "$clickCount - $timeString";
-                  return Text(text,
+                stream: Firestore.instance.collection('number').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var doc = snapshot.data.documents[0];
+                    String clickCount = doc['clickcount'].toString();
+                    Timestamp time = doc['time'];
+                    String timeString = time.millisecondsSinceEpoch.toString();
+                    String text = "$clickCount - $timeString";
+                    return Text(
+                      text,
+                      style: Theme.of(context).textTheme.display1,
+                    );
+                  }
+                  return Text(
+                    'Loading',
                     style: Theme.of(context).textTheme.display1,
                   );
-                }
-                return Text('Loading',
-                    style: Theme.of(context).textTheme.display1,
-                  );
-              }
-            )            
+                })
           ],
         ),
       ),
