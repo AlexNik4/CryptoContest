@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthenticationManager {
   FirebaseUser _user;
 
-  FirebaseUser get current_user => _user;
+  FirebaseUser get currentUser => _user;
 
   AuthenticationManager() {
     FirebaseAuth.instance.onAuthStateChanged.listen((x) => _user = x);

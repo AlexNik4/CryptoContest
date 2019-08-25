@@ -1,4 +1,5 @@
 import 'package:crypto_contest/screens/authentication_screen.dart';
+import 'package:crypto_contest/screens/competitions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: MyHomePage(title: 'Flutter Demo Home Page'),
-      home: AuthenticationScreen(),
+      home: CompetitionsScreen(),
     );
   }
 }
