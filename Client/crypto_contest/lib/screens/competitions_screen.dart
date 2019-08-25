@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_contest/models/competition.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +10,25 @@ class CompetitionsScreen extends StatefulWidget {
 }
 
 class _CompetitionsScreenState extends State<CompetitionsScreen> {
+  final CompetitionRepository repository = CompetitionRepository();
   List<Competition> competitions = List<Competition>();
 
   @override
   Widget build(BuildContext context) {
     final title = 'Competitions';
 
-    competitions.clear();
-    CompetitionRepository repository = CompetitionRepository();
-    for (int i = 0; i < 20; i++) {
-      competitions.add(repository.getCompetitionDetails("id: $i"));
-    }
+    final Competition newComp = Competition();
+    newComp.title = "Free giveaway! Join now";
+    newComp.description =
+        "Anyone who creates an account and comments for this competition will get an account";
+    newComp.createTime = Timestamp.now().toDate();
+    newComp.endTime = Timestamp.now().toDate().add(Duration(hours: 1));
+    newComp.creatorDisplayName = "Alex";
+    newComp.tokenAmount = 100;
+    newComp.numOfFollowers = 888;
+    newComp.token = "Bitcoins";
+
+    competitions = repository.getAllCompetitions();
 
     return MaterialApp(
       title: title,
@@ -27,10 +36,14 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
           appBar: AppBar(
             title: Text(title),
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => repository.createNewCompetition(newComp),
+            tooltip: 'Increment',
+            child: Icon(Icons.add),
+          ), // T
           body: GridView.builder(
             itemBuilder: (context, position) {
               Competition comp = competitions[position];
-              int numberOfFollowers = comp.numOfFollowers;
 
               return Padding(
                 padding: const EdgeInsets.all(1.0),
@@ -64,13 +77,19 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              "Followers: $numberOfFollowers",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          )
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.group,
+                                  color: Colors.blueAccent,
+                                  size: 19,
+                                ),
+                                Text(
+                                  comp.numOfFollowers.toString(),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ])
                         ],
                       ),
                     ),
