@@ -42,21 +42,20 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   flex: 15,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Text(
                         "Crypto Contest",
                         style: TextStyle(fontSize: 28, color: Colors.black),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: "Email",
-                          icon:
-                              const Icon(Icons.email, color: Colors.blueAccent),
+                          icon: const Icon(Icons.email, color: Colors.blueAccent),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -69,19 +68,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           }
                         },
                         keyboardType: TextInputType.emailAddress,
-                        style: new TextStyle(
+                        style: const TextStyle(
                           fontFamily: "Poppins",
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: "Password",
-                          icon:
-                              const Icon(Icons.lock, color: Colors.blueAccent),
+                          icon: const Icon(Icons.lock, color: Colors.blueAccent),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -94,11 +92,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           }
                         },
                         keyboardType: TextInputType.text,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: "Poppins",
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       ButtonTheme(
@@ -108,16 +106,15 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           splashColor: Colors.blueGrey,
                           color: Colors.blue,
                           onPressed: _onLoginPressed,
-                          child: const Text('Login',
-                              style: TextStyle(fontSize: 22)),
+                          child: const Text('Login', style: const TextStyle(fontSize: 22)),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   flex: 2,
-                  child: SizedBox(),
+                  child: const SizedBox(),
                 ),
               ],
             ),

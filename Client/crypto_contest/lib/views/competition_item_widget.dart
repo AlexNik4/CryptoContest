@@ -22,14 +22,12 @@ class CompetitionItemWidget extends StatelessWidget {
                   children: <Widget>[
                     Text(competition.creatorDisplayName),
                     Expanded(
-                      child: SizedBox(),
+                      child: const SizedBox(),
                     ),
                     Text(
                       competition.tokenAmount.toString(),
-                      style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17),
+                      style: const TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold, fontSize: 17),
                     ),
                     Text(competition.token)
                   ],
@@ -38,21 +36,19 @@ class CompetitionItemWidget extends StatelessWidget {
                   competition.title,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Icon(
-                        Icons.group,
-                        color: Colors.blueAccent,
-                        size: 19,
-                      ),
-                      Text(
-                        competition.numOfFollowers.toString(),
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ])
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+                  const Icon(
+                    Icons.group,
+                    color: Colors.blueAccent,
+                    size: 19,
+                  ),
+                  Text(
+                    competition.numOfFollowers.toString(),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ])
               ],
             ),
           ),
@@ -60,8 +56,8 @@ class CompetitionItemWidget extends StatelessWidget {
               child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    highlightColor: Color(0x4499ccff),
-                    splashColor: Color(0x4466b3ff),
+                    highlightColor: const Color(0x4499ccff),
+                    splashColor: const Color(0x4466b3ff),
                     onTap: () => null,
                   )))
         ]),

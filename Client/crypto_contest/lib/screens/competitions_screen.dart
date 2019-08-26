@@ -33,14 +33,14 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     return MaterialApp(
       title: title,
       home: Scaffold(
-        backgroundColor: Color(0xffe6e6e6),
+        backgroundColor: const Color(0xffe6e6e6),
         appBar: AppBar(
           title: Text(title),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _bloc.createNewCompetition(),
           tooltip: 'Increment',
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ), // T
         body: StreamBuilder<List<Competition>>(
           stream: _bloc.competitionsStream,
@@ -51,10 +51,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   return CompetitionItemWidget(snapshot.data[position]);
                 },
                 itemCount: snapshot.data.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: const CircularProgressIndicator());
             }
           },
         ),
