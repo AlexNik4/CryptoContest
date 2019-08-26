@@ -9,20 +9,31 @@ class CompetitionsScreen extends StatefulWidget {
   _CompetitionsScreenState createState() => _CompetitionsScreenState();
 }
 
-class _CompetitionsScreenState extends State<CompetitionsScreen> {
+class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBindingObserver {
   CompetitionsScreenBloc _bloc;
 
   @override
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addObserver(this);
     _bloc = CompetitionsScreenBloc();
+    _bloc.loadCompetitions();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _bloc.loadCompetitions();
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   @override
   void dispose() {
     super.dispose();
 
+    WidgetsBinding.instance.removeObserver(this);
     _bloc.dispose();
   }
 
@@ -39,7 +50,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _bloc.createNewCompetition(),
-          tooltip: 'Increment',
+          tooltip: 'Create Contest',
           child: const Icon(Icons.add),
         ), // T
         body: StreamBuilder<List<Competition>>(

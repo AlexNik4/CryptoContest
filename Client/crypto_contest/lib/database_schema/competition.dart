@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 /// Represents an existing competion
@@ -7,39 +8,39 @@ class Competition {
 
   // The total prize this competition is worth
   final double prizeValue;
-  static final String prizeValueKey = 'prizeValue';
+  static const String prizeValueKey = 'prizeValue';
 
   // The type of token of the prize
   final String coinSymbol;
-  static final String coinSymbolKey = 'coinSymbolKey';
+  static const String coinSymbolKey = 'coinSymbol';
 
   // Create time of this competition
   DateTime createTime;
-  static final String createTimeKey = 'createTimeKey';
+  static const String createTimeKey = 'createTime';
 
   // When is the comptetition closed
   final Duration duration;
-  static final String durationKey = 'duration';
+  static const String durationKey = 'duration';
 
   // The title of the competition
   final String title;
-  static final String titleKey = 'title';
+  static const String titleKey = 'title';
 
   // The description of how to participate in the competition
   final String description;
-  static final String descriptionKey = 'description';
+  static const String descriptionKey = 'description';
 
   // The unique identifier of the user who created this competition
   final String creatorId;
-  static final String creatorIdKey = 'creatorId';
+  static const String creatorIdKey = 'creatorId';
 
   // The display name of the user who created this competition
   final String creatorDisplayName;
-  static final String creatorDisplayNameKey = 'creatorDisplayName';
+  static const String creatorDisplayNameKey = 'creatorDisplayName';
 
   // The number of users following this competition
   final int followerCount;
-  static final String followerCountKey = 'followerCount';
+  static const String followerCountKey = 'followerCount';
 
   /// Constructor
   Competition(
@@ -56,7 +57,7 @@ class Competition {
       : id = id,
         prizeValue = data[prizeValueKey],
         coinSymbol = data[coinSymbolKey],
-        createTime = data[createTimeKey],
+        createTime = (data[createTimeKey] as Timestamp).toDate(),
         duration = data[durationKey],
         title = data[titleKey],
         description = data[descriptionKey],

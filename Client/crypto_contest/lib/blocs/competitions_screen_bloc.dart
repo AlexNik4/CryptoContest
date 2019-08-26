@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:get_it/get_it.dart';
@@ -13,8 +14,18 @@ class CompetitionsScreenBloc {
 
   get competitionsStream => _streamController.stream;
 
-  CompetitionsScreenBloc() {
-    _disposable.add(_repository.competitionsStream.listen((x) => _streamController.sink.add(x)));
+  void _handleSnapshot(QuerySnapshot snapshot) {
+    // Dont listen to every single update from the db
+    if (!snapshot.metadata.isFromCache) {
+      _disposable.clear();
+    }
+    List<Competition> newList =
+        snapshot.documents.map((doc) => Competition.fromMap(doc.data, doc.documentID)).toList();
+    _streamController.sink.add((newList));
+  }
+
+  void loadCompetitions() {
+    _disposable.add(_repository.getTopCompetitionsQuery().snapshots().listen(_handleSnapshot));
   }
 
   void createNewCompetition() {
