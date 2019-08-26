@@ -6,10 +6,10 @@
 	],
 	"settings": {
 		"editor.formatOnSave": true,
-		"dart.lineLength": 120,
+		"dart.lineLength": 100,
 		"[dart]": {
 			"editor.rulers": [
-				120
+				100
 			]
 		},
 	}

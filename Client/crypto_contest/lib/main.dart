@@ -1,9 +1,14 @@
-import 'package:crypto_contest/screens/authentication_screen.dart';
+import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:crypto_contest/screens/competitions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_it/get_it.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // Register dependency injection
+  GetIt.I.registerLazySingleton<CompetitionRepository>(() => CompetitionRepository());
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -49,13 +54,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() {
-    var doc = Firestore.instance
-        .collection('number')
-        .document('t9c0CaOXTZT0XTxwmrUd');
+    var doc = Firestore.instance.collection('number').document('t9c0CaOXTZT0XTxwmrUd');
     Firestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(doc);
-      await transaction.update(doc,
-          {'clickcount': snapshot['clickcount'] + 1, 'time': Timestamp.now()});
+      await transaction
+          .update(doc, {'clickcount': snapshot['clickcount'] + 1, 'time': Timestamp.now()});
     });
   }
 
