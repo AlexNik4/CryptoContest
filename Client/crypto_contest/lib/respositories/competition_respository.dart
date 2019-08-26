@@ -1,7 +1,6 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto_contest/models/competition.dart';
+import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -15,16 +14,15 @@ class CompetitionRepository {
     Random random = Random();
 
     for (int i = 0; i < 20; i++) {
-      Competition comp = Competition();
-      comp.title = "Free giveaway! Join now";
-      comp.description =
-          "Anyone who creates an account and comments for this competition will get an account";
-      comp.createTime = Timestamp.now().toDate();
-      comp.endTime = Timestamp.now().toDate().add(Duration(hours: 1));
-      comp.creatorDisplayName = "Alex";
-      comp.tokenAmount = random.nextInt(100).toDouble();
-      comp.numOfFollowers = random.nextInt(1000);
-      comp.token = "Bitcoins";
+      Competition comp = Competition(
+          title: "Free giveaway! Join now.",
+          description:
+              "Anyone who creates an account and comments for this competition will get an account",
+          duration: Duration(days: 5),
+          prizeValue: random.nextInt(100).toDouble(),
+          creatorDisplayName: "Alex",
+          creatorId: "TODO",
+          coinSymbol: "BTC");
       _competitions.add(comp);
     }
 

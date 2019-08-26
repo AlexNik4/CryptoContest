@@ -1,4 +1,4 @@
-import 'package:crypto_contest/models/competition.dart';
+import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -25,11 +25,11 @@ class CompetitionItemWidget extends StatelessWidget {
                       child: const SizedBox(),
                     ),
                     Text(
-                      competition.tokenAmount.toString(),
+                      competition.prizeValue.toString(),
                       style: const TextStyle(
                           color: Colors.green, fontWeight: FontWeight.bold, fontSize: 17),
                     ),
-                    Text(competition.token)
+                    Text(competition.coinSymbol)
                   ],
                 ),
                 Text(
@@ -45,7 +45,7 @@ class CompetitionItemWidget extends StatelessWidget {
                     size: 19,
                   ),
                   Text(
-                    competition.numOfFollowers.toString(),
+                    competition.followerCount.toString(),
                     style: const TextStyle(fontSize: 16),
                   ),
                 ])
