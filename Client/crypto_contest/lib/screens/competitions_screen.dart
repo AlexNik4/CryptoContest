@@ -10,13 +10,13 @@ class CompetitionsScreen extends StatefulWidget {
 }
 
 class _CompetitionsScreenState extends State<CompetitionsScreen> {
-  final CompetitionsScreenBloc _bloc = CompetitionsScreenBloc();
+  CompetitionsScreenBloc _bloc;
 
   @override
   void initState() {
     super.initState();
 
-    _bloc.start();
+    _bloc = CompetitionsScreenBloc();
   }
 
   @override

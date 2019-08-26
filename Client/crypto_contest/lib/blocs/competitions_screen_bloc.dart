@@ -12,8 +12,8 @@ class CompetitionsScreenBloc {
 
   get competitionsStream => _streamController.stream;
 
-  void start() {
-    _streamController.sink.add(_repository.getAllCompetitions());
+  CompetitionsScreenBloc() {
+    _repository.competitionsStream.listen((x) => _streamController.sink.add(x));
   }
 
   void createNewCompetition() {
@@ -28,9 +28,7 @@ class CompetitionsScreenBloc {
     newComp.numOfFollowers = 888;
     newComp.token = "Bitcoins";
 
-    // TODO : Alex - Do not manuall call the sink. Make the repository have its own stream.
     _repository.createNewCompetition(newComp);
-    _streamController.sink.add(_repository.getAllCompetitions());
   }
 
   void dispose() {

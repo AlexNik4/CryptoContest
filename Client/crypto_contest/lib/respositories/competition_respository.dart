@@ -2,9 +2,14 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_contest/models/competition.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/subjects.dart';
 
 class CompetitionRepository {
-  List<Competition> competitions = List<Competition>();
+  BehaviorSubject<List<Competition>> _subject = BehaviorSubject.seeded(null);
+  List<Competition> _competitions = List<Competition>();
+
+  Observable get competitionsStream => _subject.stream;
 
   CompetitionRepository() {
     Random random = Random();
@@ -20,16 +25,14 @@ class CompetitionRepository {
       comp.tokenAmount = random.nextInt(100).toDouble();
       comp.numOfFollowers = random.nextInt(1000);
       comp.token = "Bitcoins";
-      competitions.add(comp);
+      _competitions.add(comp);
     }
-  }
 
-  /// Get all the current competitions
-  List<Competition> getAllCompetitions() {
-    return competitions;
+    _subject.add(_competitions);
   }
 
   void createNewCompetition(Competition newComp) {
-    competitions.add(newComp);
+    _competitions.add(newComp);
+    _subject.add(_competitions);
   }
 }
