@@ -19,8 +19,11 @@ class CompetitionsScreenBloc {
     if (!snapshot.metadata.isFromCache) {
       _disposable.clear();
     }
+
     List<Competition> newList =
         snapshot.documents.map((doc) => Competition.fromMap(doc.data, doc.documentID)).toList();
+
+    // TODO : Alex - Filter out the invalid competitions here
     _streamController.sink.add((newList));
   }
 
@@ -33,7 +36,7 @@ class CompetitionsScreenBloc {
         title: "Free giveaway! Join now.",
         description:
             "Anyone who creates an account and comments for this competition will get an account",
-        duration: Duration(days: 5),
+        duration: Duration(days: 5).inMilliseconds,
         prizeValue: 0.5,
         creatorDisplayName: "Alex",
         creatorId: "TODO",

@@ -39,6 +39,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
     _bloc.dispose();
   }
 
+  void _onNewCompetitionFABPressed() async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CreateCompetitionScreen()));
+    _bloc.loadCompetitions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,8 +55,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
           title: Text(_title),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreateCompetitionScreen())),
+          onPressed: _onNewCompetitionFABPressed,
           tooltip: 'Create Contest',
           child: const Icon(Icons.add),
         ), // T

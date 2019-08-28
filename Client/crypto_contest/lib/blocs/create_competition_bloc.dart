@@ -1,15 +1,20 @@
+import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/respositories/competition_respository.dart';
+import 'package:crypto_contest/view_models/create_competition_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class CreateCompetitionScreenBloc {
   static const communityVotedCompetition = 0;
   static const creatorDecidedCompetition = 1;
   static const giveawayCompetition = 2;
 
+  final _repository = GetIt.I.get<CompetitionRepository>();
+
   final formKey = GlobalKey<FormState>();
   final numberOfCompetitionModes = 3;
 
-  int selectedCompetitionMode = 0;
-  DateTime selectedEndDate = DateTime.now().add(Duration(days: 1));
+  CreateCompetitionViewModel viewModel = CreateCompetitionViewModel();
 
   String validateTitleValue(String value) {
     if (value.isEmpty) {
@@ -65,18 +70,31 @@ class CreateCompetitionScreenBloc {
   Future<Null> selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: selectedEndDate,
+        initialDate: viewModel.selectedEndDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedEndDate) {
+    if (picked != null && picked != viewModel.selectedEndDate) {
       // TODO : Alex - Use stream builder to return value
-      selectedEndDate = picked;
+      viewModel.selectedEndDate = picked;
     }
   }
 
-  void onCreateCompetitionPressed() {
+  bool onCreateCompetitionPressed() {
     if (formKey.currentState.validate()) {
-      // TODO : Alex - Bloc.Create competition
+      formKey.currentState.save();
+      Competition newComp = Competition(
+          title: viewModel.title,
+          description: viewModel.description,
+          duration: viewModel.selectedEndDate.difference(DateTime.now()).inMilliseconds,
+          prizeValue: double.parse(viewModel.prizeValue),
+          // TODO : Alex - Get this from the authentication service
+          creatorDisplayName: "",
+          creatorId: "",
+          coinSymbol: viewModel.coinSymbol);
+
+      _repository.createNewCompetition(newComp);
+      return true;
     }
+    return false;
   }
 }

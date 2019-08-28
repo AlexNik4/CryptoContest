@@ -15,11 +15,15 @@ class Competition {
   static const String coinSymbolKey = 'coinSymbol';
 
   // Create time of this competition
-  DateTime createTime;
+  Timestamp createTime;
   static const String createTimeKey = 'createTime';
 
   // When is the comptetition closed
-  final Duration duration;
+  Timestamp endTime;
+  static const String endTimeKey = 'endTime';
+
+  // The duration in millisecond of how long this competition will last
+  final int duration;
   static const String durationKey = 'duration';
 
   // The title of the competition
@@ -57,11 +61,23 @@ class Competition {
       : id = id,
         prizeValue = data[prizeValueKey],
         coinSymbol = data[coinSymbolKey],
-        createTime = (data[createTimeKey] as Timestamp).toDate(),
+        createTime = data[createTimeKey] as Timestamp,
         duration = data[durationKey],
         title = data[titleKey],
         description = data[descriptionKey],
         creatorId = data[creatorIdKey],
         creatorDisplayName = data[creatorDisplayNameKey],
         followerCount = data[followerCountKey];
+
+  Map<String, dynamic> toMap() => {
+        prizeValueKey: prizeValue,
+        coinSymbolKey: coinSymbol,
+        createTimeKey: FieldValue.serverTimestamp(),
+        durationKey: duration,
+        titleKey: title,
+        descriptionKey: description,
+        creatorIdKey: creatorId,
+        creatorDisplayNameKey: creatorDisplayName,
+        followerCountKey: followerCount,
+      };
 }

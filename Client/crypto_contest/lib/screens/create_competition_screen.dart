@@ -12,6 +12,12 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
   final _title = "New Competition";
   final CreateCompetitionScreenBloc _bloc = CreateCompetitionScreenBloc();
 
+  void _onCreateFABPressed() {
+    if (_bloc.onCreateCompetitionPressed()) {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +28,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
             title: Text(_title),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => _bloc.onCreateCompetitionPressed(),
+            onPressed: () => _onCreateFABPressed(),
             tooltip: 'Create Contest',
             child: const Icon(Icons.create),
           ),
@@ -33,12 +39,14 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 80),
                 child: Column(
                   children: <Widget>[
+                    // Competition title
                     TextFormField(
                       minLines: 1,
                       maxLines: 3,
                       maxLength: 100,
                       maxLengthEnforced: true,
                       keyboardType: TextInputType.text,
+                      onSaved: (value) => _bloc.viewModel.title = value,
                       validator: (value) => _bloc.validateTitleValue(value),
                       style: TextStyle(fontSize: 18),
                       decoration: InputDecoration(
@@ -56,8 +64,10 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                       children: <Widget>[
                         Container(
                           width: 120,
+                          // Competition prize value
                           child: TextFormField(
                             keyboardType: TextInputType.number,
+                            onSaved: (value) => _bloc.viewModel.prizeValue = value,
                             validator: (value) => _bloc.validatePrizeValue(value),
                             style: const TextStyle(fontSize: 16),
                             decoration: InputDecoration(
@@ -71,8 +81,10 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                         ),
                         SizedBox(width: 10),
                         Expanded(
+                          // Competition prize coin type
                           child: TextFormField(
                             keyboardType: TextInputType.text,
+                            onSaved: (value) => _bloc.viewModel.coinSymbol = value,
                             validator: (value) => _bloc.validateCoinValue(value),
                             style: const TextStyle(fontSize: 16),
                             decoration: InputDecoration(
@@ -87,6 +99,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                       ],
                     ),
                     Wrap(
+                      // The mode of competition (community, creator, random)
                       children: List<Widget>.generate(
                         _bloc.numberOfCompetitionModes,
                         (int index) {
@@ -97,10 +110,11 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                               labelStyle: TextStyle(color: Colors.black),
                               selectedColor: const Color(0xff0066ff),
                               label: Text(_bloc.getSelectModeText(index)),
-                              selected: _bloc.selectedCompetitionMode == index,
+                              selected: _bloc.viewModel.selectedCompetitionMode == index,
                               onSelected: (bool selected) {
                                 setState(() {
-                                  _bloc.selectedCompetitionMode = selected ? index : null;
+                                  // TODO : Alex - Use enums
+                                  _bloc.viewModel.selectedCompetitionMode = selected ? index : null;
                                 });
                               },
                             ),
@@ -108,11 +122,13 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                         },
                       ).toList(),
                     ),
+                    // The competition duration
                     RaisedButton(
                       onPressed: () => _bloc.selectDate(context),
-                      child: Text(_bloc.selectedEndDate.toLocal().toString()),
+                      child: Text(_bloc.viewModel.selectedEndDate.toLocal().toString()),
                     ),
                     SizedBox(height: 10),
+                    // Additional instructions/details for the competition
                     TextFormField(
                       minLines: 2,
                       maxLines: 8,
