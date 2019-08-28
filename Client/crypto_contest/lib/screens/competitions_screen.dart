@@ -1,5 +1,6 @@
 import 'package:crypto_contest/blocs/competitions_screen_bloc.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/screens/create_competition_screen.dart';
 import 'package:crypto_contest/views/competition_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +11,7 @@ class CompetitionsScreen extends StatefulWidget {
 }
 
 class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBindingObserver {
+  final _title = "Competitions";
   CompetitionsScreenBloc _bloc;
 
   @override
@@ -39,17 +41,16 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
 
   @override
   Widget build(BuildContext context) {
-    final title = 'Competitions';
-
     return MaterialApp(
-      title: title,
+      title: _title,
       home: Scaffold(
         backgroundColor: const Color(0xffe6e6e6),
         appBar: AppBar(
-          title: Text(title),
+          title: Text(_title),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _bloc.createNewCompetition(),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CreateCompetitionScreen())),
           tooltip: 'Create Contest',
           child: const Icon(Icons.add),
         ), // T
