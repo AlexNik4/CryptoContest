@@ -1,11 +1,20 @@
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/screens/competition_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CompetitionItemWidget extends StatelessWidget {
-  final Competition competition;
+  final Competition _competition;
 
-  const CompetitionItemWidget(this.competition);
+  const CompetitionItemWidget(this._competition);
+
+  void _onComptetitionSelected(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      CompetitionDetailsScreen.routeName,
+      arguments: _competition,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +29,20 @@ class CompetitionItemWidget extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(competition.creatorDisplayName),
+                    Text(_competition.creatorDisplayName),
                     Expanded(
                       child: const SizedBox(),
                     ),
                     Text(
-                      competition.prizeValue.toString(),
+                      _competition.prizeValue.toString(),
                       style: const TextStyle(
                           color: Colors.green, fontWeight: FontWeight.bold, fontSize: 17),
                     ),
-                    Text(competition.coinSymbol)
+                    Text(_competition.coinSymbol)
                   ],
                 ),
                 Text(
-                  competition.title,
+                  _competition.title,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -45,7 +54,7 @@ class CompetitionItemWidget extends StatelessWidget {
                     size: 19,
                   ),
                   Text(
-                    competition.followerCount.toString(),
+                    _competition.followerCount.toString(),
                     style: const TextStyle(fontSize: 16),
                   ),
                 ])
@@ -58,7 +67,7 @@ class CompetitionItemWidget extends StatelessWidget {
                   child: InkWell(
                     highlightColor: const Color(0x4499ccff),
                     splashColor: const Color(0x4466b3ff),
-                    onTap: () => null,
+                    onTap: () => _onComptetitionSelected(context),
                   )))
         ]),
       ),

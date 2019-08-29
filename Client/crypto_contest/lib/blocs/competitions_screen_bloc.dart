@@ -31,20 +31,6 @@ class CompetitionsScreenBloc {
     _disposable.add(_repository.getTopCompetitionsQuery().snapshots().listen(_handleSnapshot));
   }
 
-  void createNewCompetition() {
-    Competition newComp = Competition(
-        title: "Free giveaway! Join now.",
-        description:
-            "Anyone who creates an account and comments for this competition will get an account",
-        duration: Duration(days: 5).inMilliseconds,
-        prizeValue: 0.5,
-        creatorDisplayName: "Alex",
-        creatorId: "TODO",
-        coinSymbol: "BTC");
-
-    _repository.createNewCompetition(newComp);
-  }
-
   void dispose() {
     _disposable.dispose();
     _streamController.close();

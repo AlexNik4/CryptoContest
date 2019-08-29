@@ -47,34 +47,31 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        backgroundColor: const Color(0xffe6e6e6),
-        appBar: AppBar(
-          title: Text(_title),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _onNewCompetitionFABPressed,
-          tooltip: 'Create Contest',
-          child: const Icon(Icons.add),
-        ), // T
-        body: StreamBuilder<List<Competition>>(
-          stream: _bloc.competitionsStream,
-          builder: (BuildContext context, AsyncSnapshot<List<Competition>> snapshot) {
-            if (snapshot.hasData) {
-              return GridView.builder(
-                itemBuilder: (context, position) {
-                  return CompetitionItemWidget(snapshot.data[position]);
-                },
-                itemCount: snapshot.data.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              );
-            } else {
-              return Center(child: const CircularProgressIndicator());
-            }
-          },
-        ),
+    return Scaffold(
+      backgroundColor: const Color(0xffe6e6e6),
+      appBar: AppBar(
+        title: Text(_title),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onNewCompetitionFABPressed,
+        tooltip: 'Create Contest',
+        child: const Icon(Icons.add),
+      ), // T
+      body: StreamBuilder<List<Competition>>(
+        stream: _bloc.competitionsStream,
+        builder: (BuildContext context, AsyncSnapshot<List<Competition>> snapshot) {
+          if (snapshot.hasData) {
+            return GridView.builder(
+              itemBuilder: (context, position) {
+                return CompetitionItemWidget(snapshot.data[position]);
+              },
+              itemCount: snapshot.data.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            );
+          } else {
+            return Center(child: const CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
