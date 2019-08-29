@@ -17,11 +17,6 @@ class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen> {
       appBar: AppBar(
         title: Text(competition.title),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => null,
-        tooltip: 'Create Contest',
-        child: const Icon(Icons.create),
-      ),
     );
   }
 }
