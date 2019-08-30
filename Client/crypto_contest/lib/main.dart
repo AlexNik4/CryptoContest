@@ -1,13 +1,15 @@
-import 'package:crypto_contest/respositories/competition_respository.dart';
-import 'package:crypto_contest/screens/competition_details_screen.dart';
-import 'package:crypto_contest/screens/competitions_screen.dart';
-import 'package:crypto_contest/screens/page_not_found_screen.dart';
+import 'managers/authentication_mgr.dart';
+import 'respositories/competition_respository.dart';
+import 'screens/competitions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'managers/navigation_mgr.dart';
 
 void main() {
   // Register dependency injection
+  GetIt.I.registerLazySingleton<AuthenticationMgr>(() => AuthenticationMgr());
   GetIt.I.registerLazySingleton<CompetitionRepository>(() => CompetitionRepository());
+  GetIt.I.registerLazySingleton<NavigationMgr>(() => NavigationMgr());
   runApp(MyApp());
 }
 
@@ -15,14 +17,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    NavigationMgr navMgr = GetIt.I.get<NavigationMgr>();
+
     return MaterialApp(
       home: CompetitionsScreen(),
-      routes: {
-        CompetitionDetailsScreen.routeName: (context) => CompetitionDetailsScreen(),
-      },
-      onUnknownRoute: (RouteSettings setting) {
-        return MaterialPageRoute(builder: (context) => PageNotFoundScreen());
-      },
+      routes: navMgr.routes,
+      navigatorKey: navMgr.navigatorKey,
+      onUnknownRoute: navMgr.unknownRoute,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

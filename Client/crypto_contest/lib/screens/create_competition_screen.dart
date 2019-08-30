@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 class CreateCompetitionScreen extends StatefulWidget {
   @override
-  _CreateCompetitionScreenState createState() => _CreateCompetitionScreenState();
+  _CreateCompetitionScreenState createState() =>
+      _CreateCompetitionScreenState();
 }
 
 /// From screen for creating a new competition
 class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
     with SingleTickerProviderStateMixin {
   final _title = "New Competition";
-  final CreateCompetitionScreenBloc _bloc = CreateCompetitionScreenBloc();
+  final _bloc = CreateCompetitionScreenBloc();
 
   void _onCreateFABPressed() {
     if (_bloc.onCreateCompetitionPressed()) {
@@ -34,7 +35,8 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
           key: _bloc.formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 80),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 8.0, bottom: 80),
               child: Column(
                 children: <Widget>[
                   // Competition title
@@ -65,7 +67,8 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                         // Competition prize value
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          onSaved: (value) => _bloc.viewModel.prizeValue = value,
+                          onSaved: (value) =>
+                              _bloc.viewModel.prizeValue = value,
                           validator: (value) => _bloc.validatePrizeValue(value),
                           style: const TextStyle(fontSize: 16),
                           decoration: InputDecoration(
@@ -82,7 +85,8 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                         // Competition prize coin type
                         child: TextFormField(
                           keyboardType: TextInputType.text,
-                          onSaved: (value) => _bloc.viewModel.coinSymbol = value,
+                          onSaved: (value) =>
+                              _bloc.viewModel.coinSymbol = value,
                           validator: (value) => _bloc.validateCoinValue(value),
                           style: const TextStyle(fontSize: 16),
                           decoration: InputDecoration(
@@ -108,11 +112,13 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                             labelStyle: TextStyle(color: Colors.black),
                             selectedColor: const Color(0xff0066ff),
                             label: Text(_bloc.getSelectModeText(index)),
-                            selected: _bloc.viewModel.selectedCompetitionMode == index,
+                            selected: _bloc.viewModel.selectedCompetitionMode ==
+                                index,
                             onSelected: (bool selected) {
                               setState(() {
                                 // TODO : Alex - Use enums
-                                _bloc.viewModel.selectedCompetitionMode = selected ? index : null;
+                                _bloc.viewModel.selectedCompetitionMode =
+                                    selected ? index : null;
                               });
                             },
                           ),
@@ -123,7 +129,8 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                   // The competition duration
                   RaisedButton(
                     onPressed: () => _bloc.selectDate(context),
-                    child: Text(_bloc.viewModel.selectedEndDate.toLocal().toString()),
+                    child: Text(
+                        _bloc.viewModel.selectedEndDate.toLocal().toString()),
                   ),
                   SizedBox(height: 10),
                   // Additional instructions/details for the competition

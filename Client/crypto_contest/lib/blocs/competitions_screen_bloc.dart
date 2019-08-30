@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/managers/navigation_mgr.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,6 +26,11 @@ class CompetitionsScreenBloc {
 
     // TODO : Alex - Filter out the invalid competitions here
     _streamController.sink.add((newList));
+  }
+
+  void createNewCompetition() async {
+    await GetIt.I.get<NavigationMgr>().navigateToCreateCompetitionScreen();
+    loadCompetitions();
   }
 
   void loadCompetitions() {

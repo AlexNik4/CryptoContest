@@ -1,20 +1,13 @@
 import 'package:crypto_contest/database_schema/competition.dart';
-import 'package:crypto_contest/screens/competition_details_screen.dart';
+import 'package:crypto_contest/managers/navigation_mgr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
 
 class CompetitionItemWidget extends StatelessWidget {
   final Competition _competition;
 
   const CompetitionItemWidget(this._competition);
-
-  void _onComptetitionSelected(BuildContext context) {
-    Navigator.pushNamed(
-      context,
-      CompetitionDetailsScreen.routeName,
-      arguments: _competition,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +60,9 @@ class CompetitionItemWidget extends StatelessWidget {
                   child: InkWell(
                     highlightColor: const Color(0x4499ccff),
                     splashColor: const Color(0x4466b3ff),
-                    onTap: () => _onComptetitionSelected(context),
+                    onTap: () => GetIt.I
+                        .get<NavigationMgr>()
+                        .navigateToCompetitionDetailsScreen(_competition),
                   )))
         ]),
       ),

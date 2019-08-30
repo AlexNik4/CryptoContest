@@ -2,8 +2,6 @@ import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:flutter/material.dart';
 
 class CompetitionDetailsScreen extends StatefulWidget {
-  static const routeName = '/competitionDetails';
-
   _CompetitionDetailsScreenState createState() => _CompetitionDetailsScreenState();
 }
 

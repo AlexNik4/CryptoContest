@@ -1,10 +1,8 @@
-import 'package:crypto_contest/managers/authentication_manager.dart';
+import 'package:crypto_contest/blocs/authentication_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class AuthenticationScreen extends StatefulWidget {
-  AuthenticationScreen({Key key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() {
     return _AuthenticationScreenState();
@@ -12,23 +10,55 @@ class AuthenticationScreen extends StatefulWidget {
 }
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final AuthenticationManager _authMgr = new AuthenticationManager();
-
-  void _onLoginPressed() {
-    if (_formKey.currentState.validate()) {
-      if (_authMgr.currentUser == null) {
-        _authMgr.createUser();
-      } else {
-        print(_authMgr.currentUser);
-      }
-    }
-  }
+  final _bloc = AuthenticationScreenBloc();
 
   @override
   Widget build(BuildContext context) {
+    var emailFormField = TextFormField(
+      decoration: InputDecoration(
+        labelText: "Email",
+        icon: const Icon(Icons.email, color: Colors.blueAccent),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+      validator: (val) {
+        if (val.trim().length == 0) {
+          return "Email cannot be empty";
+        } else {
+          return null;
+        }
+      },
+      keyboardType: TextInputType.emailAddress,
+      style: const TextStyle(
+        fontFamily: "Poppins",
+      ),
+    );
+
+    var textFormField = TextFormField(
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: "Password",
+        icon: const Icon(Icons.lock, color: Colors.blueAccent),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+      validator: (val) {
+        if (val.length == 0) {
+          return "Password cannot be empty";
+        } else {
+          return null;
+        }
+      },
+      keyboardType: TextInputType.text,
+      style: const TextStyle(
+        fontFamily: "Poppins",
+      ),
+    );
+
     return Form(
-      key: _formKey,
+      key: _bloc.formKey,
       child: SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
@@ -52,50 +82,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       const SizedBox(
                         height: 25,
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          icon: const Icon(Icons.email, color: Colors.blueAccent),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        validator: (val) {
-                          if (val.trim().length == 0) {
-                            return "Email cannot be empty";
-                          } else {
-                            return null;
-                          }
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                        ),
-                      ),
+                      // Email field
+                      emailFormField,
                       const SizedBox(
                         height: 25,
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          icon: const Icon(Icons.lock, color: Colors.blueAccent),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        validator: (val) {
-                          if (val.length == 0) {
-                            return "Password cannot be empty";
-                          } else {
-                            return null;
-                          }
-                        },
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                        ),
-                      ),
+                      // Password field
+                      textFormField,
                       const SizedBox(
                         height: 20,
                       ),
@@ -105,8 +98,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         child: RaisedButton(
                           splashColor: Colors.blueGrey,
                           color: Colors.blue,
-                          onPressed: _onLoginPressed,
-                          child: const Text('Login', style: const TextStyle(fontSize: 22)),
+                          onPressed: _bloc.onLoginPressed,
+                          child: const Text('Login',
+                              style: const TextStyle(fontSize: 22)),
                         ),
                       ),
                     ],

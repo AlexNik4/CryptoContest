@@ -1,20 +1,30 @@
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/managers/authentication_mgr.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:crypto_contest/view_models/create_competition_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+/// The business logic and components for the CreateCompetitionScreen
 class CreateCompetitionScreenBloc {
   static const communityVotedCompetition = 0;
   static const creatorDecidedCompetition = 1;
   static const giveawayCompetition = 2;
 
+  final _authMgr = GetIt.I.get<AuthenticationMgr>();
   final _repository = GetIt.I.get<CompetitionRepository>();
 
   final formKey = GlobalKey<FormState>();
   final numberOfCompetitionModes = 3;
 
   CreateCompetitionViewModel viewModel = CreateCompetitionViewModel();
+
+  /// Constructor
+  CreateCompetitionScreenBloc() {
+    if (!_authMgr.isLoggedIn) {
+      // TODO : Navigate to the login screen
+    }
+  }
 
   String validateTitleValue(String value) {
     if (value.isEmpty) {
@@ -85,11 +95,12 @@ class CreateCompetitionScreenBloc {
       Competition newComp = Competition(
           title: viewModel.title,
           description: viewModel.description,
-          duration: viewModel.selectedEndDate.difference(DateTime.now()).inMilliseconds,
+          duration: viewModel.selectedEndDate
+              .difference(DateTime.now())
+              .inMilliseconds,
           prizeValue: double.parse(viewModel.prizeValue),
-          // TODO : Alex - Get this from the authentication service
-          creatorDisplayName: "",
-          creatorId: "",
+          creatorDisplayName: _authMgr.currentUser.displayName,
+          creatorId: _authMgr.currentUser.uid,
           coinSymbol: viewModel.coinSymbol);
 
       _repository.createNewCompetition(newComp);

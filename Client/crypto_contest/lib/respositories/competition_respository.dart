@@ -5,7 +5,10 @@ class CompetitionRepository {
   Firestore _db = Firestore.instance;
 
   Query getTopCompetitionsQuery() {
-    return _db.collection('competitions').limit(30);
+    return _db
+        .collection('competitions')
+        .limit(30)
+        .orderBy(Competition.createTimeKey);
   }
 
   void createNewCompetition(Competition newComp) {
