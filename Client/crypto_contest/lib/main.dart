@@ -7,7 +7,7 @@ import 'managers/navigation_mgr.dart';
 
 void main() {
   // Register dependency injection
-  GetIt.I.registerLazySingleton<AuthenticationMgr>(() => AuthenticationMgr());
+  GetIt.I.registerSingleton<AuthenticationMgr>(AuthenticationMgr());
   GetIt.I.registerLazySingleton<CompetitionRepository>(() => CompetitionRepository());
   GetIt.I.registerLazySingleton<NavigationMgr>(() => NavigationMgr());
   runApp(MyApp());

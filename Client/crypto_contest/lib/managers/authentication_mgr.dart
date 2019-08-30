@@ -13,17 +13,29 @@ class AuthenticationMgr {
     _auth.onAuthStateChanged.listen((x) => _currentUser = x);
   }
 
-  Future<AuthResult> createUser(String email, String password) async {
-    return FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  Future<FirebaseUser> createUser(String email, String password) async {
+    // TODO : Alex : Check if fixed : https://github.com/flutter/plugins/pull/1937/commits/6fdc1e9b18bd168d997f6b2777bd28f2b3b00c25
+    try {
+      var result = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      return result.user;
+    } catch (e) {
+      return null;
+    }
   }
 
-  Future<AuthResult> authenticateUser(String email, String password) async {
-    return FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  Future<FirebaseUser> authenticateUser(String email, String password) async {
+    // TODO : Alex : Check if fixed : https://github.com/flutter/plugins/pull/1937/commits/6fdc1e9b18bd168d997f6b2777bd28f2b3b00c25
+    try {
+      var result =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      return result.user;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> signOut() {
+    return _auth.signOut();
   }
 }

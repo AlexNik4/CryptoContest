@@ -1,8 +1,10 @@
 import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:crypto_contest/managers/authentication_mgr.dart';
+import 'package:crypto_contest/managers/navigation_mgr.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:crypto_contest/view_models/create_competition_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get_it/get_it.dart';
 
 /// The business logic and components for the CreateCompetitionScreen
@@ -13,16 +15,26 @@ class CreateCompetitionScreenBloc {
 
   final _authMgr = GetIt.I.get<AuthenticationMgr>();
   final _repository = GetIt.I.get<CompetitionRepository>();
+  final _navMgr = GetIt.I.get<NavigationMgr>();
 
   final formKey = GlobalKey<FormState>();
   final numberOfCompetitionModes = 3;
 
   CreateCompetitionViewModel viewModel = CreateCompetitionViewModel();
 
+  void onReturnedFromAuthScreen(dynamic value) {
+    if (!_authMgr.isLoggedIn) {
+      _navMgr.popScreen();
+    }
+  }
+
   /// Constructor
   CreateCompetitionScreenBloc() {
+    // Verify a user is logged in. If not, schedule to navigate to the login screen
     if (!_authMgr.isLoggedIn) {
-      // TODO : Navigate to the login screen
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _navMgr.navigateToAuthenticationScreen().then(onReturnedFromAuthScreen);
+      });
     }
   }
 
@@ -95,9 +107,7 @@ class CreateCompetitionScreenBloc {
       Competition newComp = Competition(
           title: viewModel.title,
           description: viewModel.description,
-          duration: viewModel.selectedEndDate
-              .difference(DateTime.now())
-              .inMilliseconds,
+          duration: viewModel.selectedEndDate.difference(DateTime.now()).inMilliseconds,
           prizeValue: double.parse(viewModel.prizeValue),
           creatorDisplayName: _authMgr.currentUser.displayName,
           creatorId: _authMgr.currentUser.uid,

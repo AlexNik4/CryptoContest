@@ -15,6 +15,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   @override
   Widget build(BuildContext context) {
     var emailFormField = TextFormField(
+      onSaved: (value) => _bloc.email = value,
       decoration: InputDecoration(
         labelText: "Email",
         icon: const Icon(Icons.email, color: Colors.blueAccent),
@@ -36,6 +37,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     );
 
     var textFormField = TextFormField(
+      onSaved: (value) => _bloc.password = value,
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
@@ -99,8 +101,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           splashColor: Colors.blueGrey,
                           color: Colors.blue,
                           onPressed: _bloc.onLoginPressed,
-                          child: const Text('Login',
-                              style: const TextStyle(fontSize: 22)),
+                          child: const Text('Login', style: const TextStyle(fontSize: 22)),
                         ),
                       ),
                     ],
