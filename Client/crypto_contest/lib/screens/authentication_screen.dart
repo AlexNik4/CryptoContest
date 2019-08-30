@@ -18,18 +18,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       onSaved: (value) => _bloc.email = value,
       decoration: InputDecoration(
         labelText: "Email",
-        icon: const Icon(Icons.email, color: Colors.blueAccent),
+        icon: const Icon(Icons.email, color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
       ),
-      validator: (val) {
-        if (val.trim().length == 0) {
-          return "Email cannot be empty";
-        } else {
-          return null;
-        }
-      },
+      validator: _bloc.validateEmailValue,
       keyboardType: TextInputType.emailAddress,
       style: const TextStyle(
         fontFamily: "Poppins",
@@ -41,18 +35,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
-        icon: const Icon(Icons.lock, color: Colors.blueAccent),
+        icon: const Icon(Icons.lock, color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
       ),
-      validator: (val) {
-        if (val.length == 0) {
-          return "Password cannot be empty";
-        } else {
-          return null;
-        }
-      },
+      validator: _bloc.validatePasswordValue,
       keyboardType: TextInputType.text,
       style: const TextStyle(
         fontFamily: "Poppins",
@@ -63,6 +51,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       key: _bloc.formKey,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: const Color(0xffff8c1a),
           body: SingleChildScrollView(
             child: Row(
               children: <Widget>[
@@ -79,7 +68,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       ),
                       Text(
                         "Crypto Contest",
-                        style: TextStyle(fontSize: 28, color: Colors.black),
+                        style: TextStyle(fontSize: 28),
                       ),
                       const SizedBox(
                         height: 25,
@@ -98,8 +87,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         minWidth: 100,
                         height: 42,
                         child: RaisedButton(
-                          splashColor: Colors.blueGrey,
-                          color: Colors.blue,
                           onPressed: _bloc.onLoginPressed,
                           child: const Text('Login', style: const TextStyle(fontSize: 22)),
                         ),

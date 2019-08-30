@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
       navigatorKey: navMgr.navigatorKey,
       onUnknownRoute: navMgr.unknownRoute,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepOrange,
+        accentColor: Colors.deepOrangeAccent,
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 
 /// The business logic and components for the CreateCompetitionScreen
 class CreateCompetitionScreenBloc {
+  // TODO : Alex - Change to enum
   static const communityVotedCompetition = 0;
   static const creatorDecidedCompetition = 1;
   static const giveawayCompetition = 2;
@@ -109,7 +110,7 @@ class CreateCompetitionScreenBloc {
           description: viewModel.description,
           duration: viewModel.selectedEndDate.difference(DateTime.now()).inMilliseconds,
           prizeValue: double.parse(viewModel.prizeValue),
-          creatorDisplayName: _authMgr.currentUser.displayName,
+          creatorDisplayName: _authMgr.currentUser.displayName ?? _authMgr.currentUser.email,
           creatorId: _authMgr.currentUser.uid,
           coinSymbol: viewModel.coinSymbol);
 

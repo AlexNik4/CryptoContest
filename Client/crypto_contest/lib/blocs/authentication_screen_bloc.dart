@@ -12,6 +12,23 @@ class AuthenticationScreenBloc {
   String email;
   String password;
 
+  String validateEmailValue(String value) {
+    if (value.trim().isEmpty) {
+      return "Competition title required";
+    }
+    if (!value.contains("@")) {
+      return "Invalid email address";
+    }
+    return null;
+  }
+
+  String validatePasswordValue(String value) {
+    if (value.length < 8) {
+      return "Minimum 8 characters are required";
+    }
+    return null;
+  }
+
   void onLoginPressed() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();

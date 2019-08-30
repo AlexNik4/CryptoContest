@@ -22,8 +22,16 @@ class CompetitionItemWidget extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(_competition.creatorDisplayName),
                     Expanded(
+                      flex: 1,
+                      child: Text(
+                        _competition.creatorDisplayName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 0,
                       child: const SizedBox(),
                     ),
                     Text(

@@ -11,7 +11,6 @@ class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen> {
     final Competition competition = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      backgroundColor: const Color(0xffe6e6e6),
       appBar: AppBar(
         title: Text(competition.title),
       ),

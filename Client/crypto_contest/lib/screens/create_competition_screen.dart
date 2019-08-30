@@ -45,7 +45,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                     maxLengthEnforced: true,
                     keyboardType: TextInputType.text,
                     onSaved: (value) => _bloc.viewModel.title = value,
-                    validator: (value) => _bloc.validateTitleValue(value),
+                    validator: _bloc.validateTitleValue,
                     style: TextStyle(fontSize: 18),
                     decoration: InputDecoration(
                       labelText: "Title",
@@ -66,7 +66,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                         child: TextFormField(
                           keyboardType: TextInputType.number,
                           onSaved: (value) => _bloc.viewModel.prizeValue = value,
-                          validator: (value) => _bloc.validatePrizeValue(value),
+                          validator: _bloc.validatePrizeValue,
                           style: const TextStyle(fontSize: 16),
                           decoration: InputDecoration(
                             labelText: "Prize Value",
@@ -83,7 +83,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                         child: TextFormField(
                           keyboardType: TextInputType.text,
                           onSaved: (value) => _bloc.viewModel.coinSymbol = value,
-                          validator: (value) => _bloc.validateCoinValue(value),
+                          validator: _bloc.validateCoinValue,
                           style: const TextStyle(fontSize: 16),
                           decoration: InputDecoration(
                             labelText: "Coin",
