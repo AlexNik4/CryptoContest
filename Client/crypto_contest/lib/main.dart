@@ -1,3 +1,4 @@
+import 'app_theme.dart';
 import 'managers/authentication_mgr.dart';
 import 'respositories/competition_respository.dart';
 import 'screens/competitions_screen.dart';
@@ -24,10 +25,7 @@ class MyApp extends StatelessWidget {
       routes: navMgr.routes,
       navigatorKey: navMgr.navigatorKey,
       onUnknownRoute: navMgr.unknownRoute,
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-        accentColor: Colors.deepOrangeAccent,
-      ),
+      theme: myTheme,
     );
   }
 }

@@ -46,7 +46,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                     keyboardType: TextInputType.text,
                     onSaved: (value) => _bloc.viewModel.title = value,
                     validator: _bloc.validateTitleValue,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 22),
                     decoration: InputDecoration(
                       labelText: "Title",
                       fillColor: Colors.black,
@@ -67,7 +67,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                           keyboardType: TextInputType.number,
                           onSaved: (value) => _bloc.viewModel.prizeValue = value,
                           validator: _bloc.validatePrizeValue,
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 20),
                           decoration: InputDecoration(
                             labelText: "Prize Value",
                             fillColor: Colors.black,
@@ -84,7 +84,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                           keyboardType: TextInputType.text,
                           onSaved: (value) => _bloc.viewModel.coinSymbol = value,
                           validator: _bloc.validateCoinValue,
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 20),
                           decoration: InputDecoration(
                             labelText: "Coin",
                             fillColor: Colors.black,
@@ -105,8 +105,6 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                           padding: const EdgeInsets.all(5.0),
                           child: ChoiceChip(
                             avatar: Icon(_bloc.getSelectModeIcon(index)),
-                            labelStyle: TextStyle(color: Colors.black),
-                            selectedColor: const Color(0xff0066ff),
                             label: Text(_bloc.getSelectModeText(index)),
                             selected: _bloc.viewModel.selectedCompetitionMode == index,
                             onSelected: (bool selected) {
@@ -131,7 +129,7 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                     minLines: 2,
                     maxLines: 8,
                     keyboardType: TextInputType.text,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 20),
                     decoration: InputDecoration(
                       labelText: "Instruction",
                       fillColor: Colors.black,

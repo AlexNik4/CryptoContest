@@ -66,8 +66,8 @@ class CompetitionItemWidget extends StatelessWidget {
               child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    highlightColor: const Color(0x4499ccff),
-                    splashColor: const Color(0x4466b3ff),
+                    highlightColor: const Color(0x44ff9933),
+                    splashColor: const Color(0x44ff8000),
                     onTap: () => GetIt.I
                         .get<NavigationMgr>()
                         .navigateToCompetitionDetailsScreen(_competition),
