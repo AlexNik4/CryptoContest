@@ -1,76 +1,106 @@
 import 'package:crypto_contest/managers/authentication_mgr.dart';
 import 'package:crypto_contest/managers/navigation_mgr.dart';
+import 'package:crypto_contest/widgets/shake_animation_widget.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rxdart/rxdart.dart';
 
+/// Business logic for the authentication screen
 class AuthenticationScreenBloc {
+  // Managers
   final _authMgr = GetIt.I.get<AuthenticationMgr>();
   final _navMgr = GetIt.I.get<NavigationMgr>();
 
-  final formKey = GlobalKey<FormState>();
+  // Keys
+  final loginFormKey = GlobalKey<FormState>();
+  final singUpFormKey = GlobalKey<FormState>();
   final cardKey = GlobalKey<FlipCardState>();
+  final shakeKey = GlobalKey<ShakeAnimationWidgetState>();
 
+  // Subjects
+  final _authenticationResultSubject = BehaviorSubject<AuthResultState>.seeded(AuthResultState());
+
+  // Bindable view model
   String email;
   String password;
   String userDisplayName;
-  String verificationCode;
+  Observable<AuthResultState> get authResultState => _authenticationResultSubject.stream;
 
-  String validateEmailValue(String value) {
-    if (value.trim().isEmpty) {
-      return "Email required";
-    }
-    if (!value.contains("@")) {
-      return "Invalid email address";
-    }
-    return null;
-  }
-
-  String validatePasswordValue(String value) {
-    if (value.length < 8) {
-      return "Minimum 8 characters are required";
-    }
-    return null;
-  }
-
-  String validateDisplayNameValue(String value) {
-    if (value.isEmpty) {
-      return "Name required";
-    }
-    return null;
-  }
-
+  // Public interface
+  /// Flip between the registration and login card
   void flipState() {
-    formKey.currentState.reset();
+    _authenticationResultSubject.add(AuthResultState());
+    loginFormKey.currentState.reset();
+    singUpFormKey.currentState.reset();
     cardKey.currentState.toggleCard();
   }
 
-  String validateVerificationCodeValue(String value) {
-    if (value.isEmpty) {
-      return "Check email for verification code";
-    }
-    return null;
-  }
-
+  /// Handle the login action
   void onLoginPressed() async {
-    if (formKey.currentState.validate()) {
-      formKey.currentState.save();
-      var user = await _authMgr.authenticateUser(email, password);
-      if (user != null) {
+    if (loginFormKey.currentState.validate()) {
+      loginFormKey.currentState.save();
+
+      _authenticationResultSubject
+          .add(AuthResultState(isProgressBarVisible: true, errorMessage: ""));
+      MyAuthResult authResult = await _authMgr.authenticateUser(email, password);
+      if (authResult.firebaseResult != null && authResult.firebaseResult.user != null) {
+        // Succesfully retrieve a user
         _navMgr.popScreen();
         return;
       }
+
+      _handleAuthResult(authResult);
     }
   }
 
+  /// Handle the registration of a new user
   void onRegisterPressed() async {
-    if (formKey.currentState.validate()) {
-      formKey.currentState.save();
-      var user = await _authMgr.createUser(email, password);
-      if (user != null) {
+    if (singUpFormKey.currentState.validate()) {
+      singUpFormKey.currentState.save();
+
+      _authenticationResultSubject
+          .add(AuthResultState(isProgressBarVisible: true, errorMessage: ""));
+      MyAuthResult authResult = await _authMgr.createUser(email, password);
+      if (authResult.firebaseResult != null && authResult.firebaseResult.user != null) {
+        // TODO : Alex - Now we should verify email and save the user display name
         _navMgr.popScreen();
         return;
       }
+
+      _handleAuthResult(authResult);
     }
   }
+
+  /// Dispose
+  void dispose() {
+    _authenticationResultSubject.close();
+  }
+
+  // Private methods
+  void _handleAuthResult(MyAuthResult authResult) {
+    switch (authResult.errorCode) {
+      case 'ERROR_INVALID_CREDENTIAL':
+      case 'ERROR_WRONG_PASSWORD':
+      case 'ERROR_USER_NOT_FOUND':
+        authResult.errorMessage = "Invalid credentials";
+        shakeKey.currentState.startAnimation();
+        break;
+    }
+
+    if (authResult.errorMessage == null) {
+      authResult.errorMessage = "Unknown error";
+    }
+
+    _authenticationResultSubject
+        .add(AuthResultState(isProgressBarVisible: false, errorMessage: authResult.errorMessage));
+  }
+}
+
+/// Authentication result state for the login screen
+class AuthResultState {
+  final String errorMessage;
+  final bool isProgressBarVisible;
+
+  AuthResultState({this.errorMessage = "", this.isProgressBarVisible = false});
 }

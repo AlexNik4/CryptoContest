@@ -1,6 +1,6 @@
 import 'package:crypto_contest/blocs/competitions_screen_bloc.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
-import 'package:crypto_contest/views/competition_item_widget.dart';
+import 'package:crypto_contest/widgets/competition_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

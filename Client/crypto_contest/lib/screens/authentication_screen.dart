@@ -1,4 +1,6 @@
 import 'package:crypto_contest/blocs/authentication_screen_bloc.dart';
+import 'package:crypto_contest/helpers/authentication_validator.dart';
+import 'package:crypto_contest/widgets/shake_animation_widget.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,8 +13,22 @@ class AuthenticationScreen extends StatefulWidget {
 }
 
 /// Reperesent the authentication screen to login existin users or register new users
-class _AuthenticationScreenState extends State<AuthenticationScreen> {
-  final _bloc = AuthenticationScreenBloc();
+class _AuthenticationScreenState extends State<AuthenticationScreen>
+    with SingleTickerProviderStateMixin {
+  final _validator = AuthenticationValidator();
+  AuthenticationScreenBloc _bloc;
+
+  @override
+  void initState() {
+    _bloc = AuthenticationScreenBloc();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +41,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       style: TextStyle(fontSize: 24),
       decoration: InputDecoration(
         labelText: "Email",
-        contentPadding: new EdgeInsets.only(top: 8.0),
+        contentPadding: new EdgeInsets.symmetric(vertical: 4),
         icon: const Icon(Icons.email, color: Colors.black),
       ),
-      validator: _bloc.validateEmailValue,
+      validator: _validator.validateEmailValue,
       keyboardType: TextInputType.emailAddress,
     );
 
@@ -38,10 +54,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       style: TextStyle(fontSize: 24),
       decoration: InputDecoration(
         labelText: "Password",
-        contentPadding: new EdgeInsets.only(top: 8.0),
+        contentPadding: new EdgeInsets.symmetric(vertical: 4),
         icon: const Icon(Icons.lock, color: Colors.black),
       ),
-      validator: _bloc.validatePasswordValue,
+      validator: _validator.validatePasswordValue,
       keyboardType: TextInputType.text,
     );
 
@@ -50,23 +66,30 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       style: TextStyle(fontSize: 24),
       decoration: InputDecoration(
         labelText: "Name",
-        contentPadding: new EdgeInsets.only(top: 8.0),
+        contentPadding: new EdgeInsets.symmetric(vertical: 4),
         icon: const Icon(Icons.person, color: Colors.black),
       ),
-      validator: _bloc.validateDisplayNameValue,
+      validator: _validator.validateDisplayNameValue,
       keyboardType: TextInputType.text,
     );
 
-    var verificationCodeFormField = TextFormField(
-      onSaved: (value) => _bloc.userDisplayName = value,
-      style: TextStyle(fontSize: 24),
-      decoration: InputDecoration(
-        labelText: "Verification Code",
-        contentPadding: new EdgeInsets.only(top: 8.0),
-        icon: const Icon(Icons.security, color: Colors.black),
-      ),
-      validator: _bloc.validateVerificationCodeValue,
-      keyboardType: TextInputType.number,
+    var progressAndResult = StreamBuilder(
+      stream: _bloc.authResultState,
+      builder: (context, AsyncSnapshot<AuthResultState> snapshot) {
+        return Stack(
+          alignment: AlignmentDirectional.center,
+          children: <Widget>[
+            Opacity(
+              opacity: snapshot.data.isProgressBarVisible ? 1.0 : 0.0,
+              child: CircularProgressIndicator(),
+            ),
+            Text(
+              snapshot.data.errorMessage,
+              style: TextStyle(color: Colors.red, fontSize: 16),
+            ),
+          ],
+        );
+      },
     );
 
     var frontLoginCard = Card(
@@ -74,38 +97,45 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(7.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              spaceBetweenFields,
-              emailFormField,
-              spaceBetweenFields,
-              passwordFormField,
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ButtonTheme(
-                    minWidth: 100,
-                    height: 42,
-                    child: FlatButton(
-                      onPressed: () => _bloc.flipState(),
-                      child: const Text('Sign Up', style: const TextStyle(fontSize: 16)),
+        child: Form(
+          key: _bloc.loginFormKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                spaceBetweenFields,
+                emailFormField,
+                spaceBetweenFields,
+                passwordFormField,
+                const SizedBox(
+                  height: 15,
+                ),
+                progressAndResult,
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ButtonTheme(
+                      minWidth: 100,
+                      height: 42,
+                      child: FlatButton(
+                        onPressed: _bloc.flipState,
+                        child: const Text('Sign Up', style: const TextStyle(fontSize: 16)),
+                      ),
                     ),
-                  ),
-                  ButtonTheme(
-                    minWidth: 100,
-                    height: 42,
-                    child: RaisedButton(
-                      onPressed: _bloc.onLoginPressed,
-                      child: const Text('LOGIN', style: const TextStyle(fontSize: 22)),
+                    ButtonTheme(
+                      minWidth: 100,
+                      height: 42,
+                      child: RaisedButton(
+                        onPressed: _bloc.onLoginPressed,
+                        child: const Text('LOGIN', style: const TextStyle(fontSize: 22)),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -116,76 +146,77 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(7.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              spaceBetweenFields,
-              userDisplayNameFormField,
-              spaceBetweenFields,
-              emailFormField,
-              spaceBetweenFields,
-              passwordFormField,
-              spaceBetweenFields,
-              verificationCodeFormField,
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ButtonTheme(
-                    minWidth: 100,
-                    height: 42,
-                    child: FlatButton(
-                      onPressed: () => _bloc.flipState(),
-                      child: const Text('Sign In', style: const TextStyle(fontSize: 16)),
+        child: Form(
+          key: _bloc.singUpFormKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                userDisplayNameFormField,
+                spaceBetweenFields,
+                emailFormField,
+                spaceBetweenFields,
+                passwordFormField,
+                const SizedBox(
+                  height: 15,
+                ),
+                progressAndResult,
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ButtonTheme(
+                      minWidth: 100,
+                      height: 42,
+                      child: FlatButton(
+                        onPressed: _bloc.flipState,
+                        child: const Text('Sign In', style: const TextStyle(fontSize: 16)),
+                      ),
                     ),
-                  ),
-                  ButtonTheme(
-                    minWidth: 100,
-                    height: 42,
-                    child: RaisedButton(
-                      onPressed: _bloc.onLoginPressed,
-                      child: const Text('Register', style: const TextStyle(fontSize: 22)),
+                    ButtonTheme(
+                      minWidth: 100,
+                      height: 42,
+                      child: RaisedButton(
+                        onPressed: _bloc.onRegisterPressed,
+                        child: const Text('Register', style: const TextStyle(fontSize: 22)),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
 
-    return Form(
-      key: _bloc.formKey,
-      child: SafeArea(
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              // Background
-              Container(
-                height: MediaQuery.of(context).size.height / 8,
-                child: Center(
-                  child: Text(
-                    "Crypto Contest",
-                    style:
-                        TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xffe6e6e6),
+        body: Stack(
+          children: <Widget>[
+            // Background
+            Container(
+              height: MediaQuery.of(context).size.height / 8,
+              child: Center(
+                child: Text(
+                  "Crypto Contest",
+                  style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
                 ),
-                decoration: new BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: new BorderRadius.only(
-                        bottomLeft: const Radius.circular(40.0),
-                        bottomRight: const Radius.circular(40.0))),
               ),
-              // Login area
-              Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 10.5,
-                    left: 20,
-                    right: 20,
-                    bottom: 10),
+              decoration: new BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: new BorderRadius.only(
+                      bottomLeft: const Radius.circular(40.0),
+                      bottomRight: const Radius.circular(40.0))),
+            ),
+            // Login area
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height / 10.5, left: 20, right: 20, bottom: 10),
+              child: ShakeAnimationWidget(
+                key: _bloc.shakeKey,
                 child: FlipCard(
                   flipOnTouch: false,
                   key: _bloc.cardKey,
@@ -194,8 +225,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   back: backSignUpCard,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
