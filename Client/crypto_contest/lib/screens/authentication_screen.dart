@@ -73,9 +73,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
       keyboardType: TextInputType.text,
     );
 
-    var progressAndResult = StreamBuilder(
+    var progressAndResult = StreamBuilder<AuthResultState>(
       stream: _bloc.authResultState,
-      builder: (context, AsyncSnapshot<AuthResultState> snapshot) {
+      builder: (context, snapshot) {
         return Stack(
           alignment: AlignmentDirectional.center,
           children: <Widget>[

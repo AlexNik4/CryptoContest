@@ -63,7 +63,8 @@ class AuthenticationScreenBloc {
           .add(AuthResultState(isProgressBarVisible: true, errorMessage: ""));
       MyAuthResult authResult = await _authMgr.createUser(email, password);
       if (authResult.firebaseResult != null && authResult.firebaseResult.user != null) {
-        // TODO : Alex - Now we should verify email and save the user display name
+        // TODO : Alex - Now we should verify email
+        await _authMgr.updateUserInformation(userDisplayName);
         _navMgr.popScreen();
         return;
       }

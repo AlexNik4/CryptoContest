@@ -3,6 +3,7 @@ import 'package:crypto_contest/screens/authentication_screen.dart';
 import 'package:crypto_contest/screens/competition_details_screen.dart';
 import 'package:crypto_contest/screens/create_competition_screen.dart';
 import 'package:crypto_contest/screens/page_not_found_screen.dart';
+import 'package:crypto_contest/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 
 /// Managers the navigation through out the application
@@ -10,12 +11,14 @@ class NavigationMgr {
   static const _routeLoginScreen = '/login';
   static const _routeCompetitionDetails = '/competitionDetails';
   static const _routeCreateCompetitions = '/createCompetitions';
+  static const _routeUserDetails = '/userinfo';
 
   final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
   final Map<String, Widget Function(BuildContext)> routes = {
     _routeLoginScreen: (context) => AuthenticationScreen(),
     _routeCompetitionDetails: (context) => CompetitionDetailsScreen(),
     _routeCreateCompetitions: (context) => CreateCompetitionScreen(),
+    _routeUserDetails: (context) => UserProfileScreen(),
   };
 
   final Function unknownRoute = (RouteSettings setting) {
@@ -37,6 +40,10 @@ class NavigationMgr {
 
   Future<dynamic> navigateToCreateCompetitionScreen() {
     return navigateTo(_routeCreateCompetitions);
+  }
+
+  Future<dynamic> navigateToUserDetailsScreen() {
+    return navigateTo(_routeUserDetails);
   }
 
   Future<dynamic> navigateToCompetitionDetailsScreen(Competition competition) {

@@ -1,8 +1,10 @@
 import 'package:crypto_contest/blocs/competitions_screen_bloc.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/managers/navigation_mgr.dart';
 import 'package:crypto_contest/widgets/competition_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
 
 class CompetitionsScreen extends StatefulWidget {
   @override
@@ -44,6 +46,16 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
       backgroundColor: const Color(0xffe6e6e6),
       appBar: AppBar(
         title: Text(_title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.person_pin,
+              size: 28,
+            ),
+            // TODO : Alex - Put this in the app bar class?
+            onPressed: GetIt.I.get<NavigationMgr>().navigateToUserDetailsScreen,
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _bloc.createNewCompetition,

@@ -1,17 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Manages user authentication state and user information
 class AuthenticationMgr {
   final _auth = FirebaseAuth.instance;
+  final _subscriptions = CompositeSubscription();
   FirebaseUser _currentUser;
 
+  // Subjects
+  // TODO : Alex - Use my own model here!! Check for nulls since the Firebase user is null on init
+  final _currentUserSubject = BehaviorSubject<FirebaseUser>.seeded(null);
+
+  // Public details
+  Observable<FirebaseUser> get currentUserDetails => _currentUserSubject.stream;
   FirebaseUser get currentUser => _currentUser;
   bool get isLoggedIn => _currentUser != null;
 
+  // TODO : Alex - Only use the observable
+  void _onUserUpdated(FirebaseUser user) {
+    _currentUser = user;
+    _currentUserSubject.add(user);
+  }
+
   /// Constructor
   AuthenticationMgr() {
-    _auth.onAuthStateChanged.listen((x) => _currentUser = x);
+    _subscriptions.add(_auth.onAuthStateChanged.listen(_onUserUpdated));
   }
 
   /// Register a new user with the given username and password
@@ -49,9 +63,29 @@ class AuthenticationMgr {
     return authResult;
   }
 
+  Future<void> updateUserInformation(String displayName) async {
+    if (_currentUser != null) {
+      UserUpdateInfo updateInfo = UserUpdateInfo();
+      updateInfo.displayName = displayName;
+      try {
+        await _currentUser.updateProfile(updateInfo);
+        _currentUser.reload();
+        // https://github.com/flutter/flutter/issues/20390
+        _currentUser = await _auth.currentUser();
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
+
   /// Sign out the current user
   Future<void> signOut() {
     return _auth.signOut();
+  }
+
+  /// Dipose
+  void dispose() {
+    _subscriptions.dispose();
   }
 }
 
