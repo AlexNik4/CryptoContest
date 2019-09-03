@@ -27,7 +27,9 @@ class NavigationMgr {
 
   /// Navigate back to the previous screen
   void popScreen() {
-    navigatorKey.currentState.pop();
+    if (navigatorKey.currentState.canPop()) {
+      navigatorKey.currentState.pop();
+    }
   }
 
   Future<dynamic> navigateTo(String routeName) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
+/// Widget that displays a single competition as a list item
 class CompetitionItemWidget extends StatelessWidget {
   final Competition _competition;
 

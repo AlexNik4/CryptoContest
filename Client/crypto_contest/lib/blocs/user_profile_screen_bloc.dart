@@ -37,7 +37,7 @@ class UserProfileScreenBloc {
 
   /// Log off the current user
   Future<void> logOffUser() async {
-    await _authMgr.signOut();
+    _authMgr.signOut();
     _navMgr.popScreen();
   }
 

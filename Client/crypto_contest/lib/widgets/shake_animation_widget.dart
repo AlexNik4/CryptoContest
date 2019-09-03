@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
+/// Widget that can shake the given child widgets
 class ShakeAnimationWidget extends StatefulWidget {
   final Widget child;
 
@@ -29,8 +29,8 @@ class ShakeAnimationWidgetState extends State<ShakeAnimationWidget>
     try {
       _controller.reset();
       await _controller.forward();
-    } on TickerCanceled {
-      // the animation got canceled, probably because we were disposed
+    } catch (e) {
+      // The animation got canceled, probably because we were disposed
     }
   }
 

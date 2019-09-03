@@ -12,6 +12,8 @@ class AuthenticationScreenBloc {
   final _authMgr = GetIt.I.get<AuthenticationMgr>();
   final _navMgr = GetIt.I.get<NavigationMgr>();
 
+  bool _isDisposed = false;
+
   // Keys
   final loginFormKey = GlobalKey<FormState>();
   final singUpFormKey = GlobalKey<FormState>();
@@ -44,6 +46,11 @@ class AuthenticationScreenBloc {
       _authenticationResultSubject
           .add(AuthResultState(isProgressBarVisible: true, errorMessage: ""));
       MyAuthResult authResult = await _authMgr.authenticateUser(email, password);
+
+      if (_isDisposed) {
+        return;
+      }
+
       if (authResult.firebaseResult != null && authResult.firebaseResult.user != null) {
         // Succesfully retrieve a user
         _navMgr.popScreen();
@@ -62,10 +69,17 @@ class AuthenticationScreenBloc {
       _authenticationResultSubject
           .add(AuthResultState(isProgressBarVisible: true, errorMessage: ""));
       MyAuthResult authResult = await _authMgr.createUser(email, password);
+
+      if (_isDisposed) {
+        return;
+      }
+
       if (authResult.firebaseResult != null && authResult.firebaseResult.user != null) {
         // TODO : Alex - Now we should verify email
         await _authMgr.updateUserInformation(userDisplayName);
-        _navMgr.popScreen();
+        if (!_isDisposed) {
+          _navMgr.popScreen();
+        }
         return;
       }
 
@@ -75,6 +89,7 @@ class AuthenticationScreenBloc {
 
   /// Dispose
   void dispose() {
+    _isDisposed = true;
     _authenticationResultSubject.close();
   }
 

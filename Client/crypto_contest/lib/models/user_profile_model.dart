@@ -9,18 +9,20 @@ class UserProfileModel {
   final String userEmail;
   final Color userPrimaryColor;
 
-  // TODO : Alex - Remove these temp values
+  /// Constructor
   UserProfileModel(
       {this.id = "",
       this.userDisplayName = "",
       this.userEmail = "",
       this.userPrimaryColor = Colors.blue});
 
+  /// Constructor
   UserProfileModel.fromFirebaseUser(FirebaseUser user, {this.userPrimaryColor = Colors.blue})
       : this.id = user.uid,
         this.userDisplayName = user.displayName ?? user.email,
         this.userEmail = user.email;
 
+  /// Constructor
   UserProfileModel.fromData(FirebaseUser user, UserProfile profile)
       : this.id = user.uid,
         this.userDisplayName = user.displayName ?? user.email,

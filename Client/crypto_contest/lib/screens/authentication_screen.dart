@@ -32,13 +32,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
 
   @override
   Widget build(BuildContext context) {
+    final double formFontSize = 22;
     const spaceBetweenFields = const SizedBox(
       height: 25,
     );
 
     var emailFormField = TextFormField(
       onSaved: (value) => _bloc.email = value,
-      style: TextStyle(fontSize: 24),
+      style: TextStyle(fontSize: formFontSize),
       decoration: InputDecoration(
         labelText: "Email",
         contentPadding: new EdgeInsets.symmetric(vertical: 4),
@@ -51,7 +52,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
     var passwordFormField = TextFormField(
       onSaved: (value) => _bloc.password = value,
       obscureText: true,
-      style: TextStyle(fontSize: 24),
+      style: TextStyle(fontSize: formFontSize),
       decoration: InputDecoration(
         labelText: "Password",
         contentPadding: new EdgeInsets.symmetric(vertical: 4),
@@ -63,7 +64,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
 
     var userDisplayNameFormField = TextFormField(
       onSaved: (value) => _bloc.userDisplayName = value,
-      style: TextStyle(fontSize: 24),
+      style: TextStyle(fontSize: formFontSize),
       decoration: InputDecoration(
         labelText: "Name",
         contentPadding: new EdgeInsets.symmetric(vertical: 4),
