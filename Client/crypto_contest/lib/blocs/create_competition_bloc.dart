@@ -23,18 +23,17 @@ class CreateCompetitionScreenBloc {
 
   CreateCompetitionViewModel viewModel = CreateCompetitionViewModel();
 
-  void onReturnedFromAuthScreen(dynamic value) {
-    if (!_authMgr.isLoggedIn) {
-      _navMgr.popScreen();
-    }
-  }
-
   /// Constructor
   CreateCompetitionScreenBloc() {
     // Verify a user is logged in. If not, schedule to navigate to the login screen
     if (!_authMgr.isLoggedIn) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        _navMgr.navigateToAuthenticationScreen().then(onReturnedFromAuthScreen);
+        _navMgr.navigateToAuthenticationScreen().then((value) {
+          if (!_authMgr.isLoggedIn) {
+            // Pop screen if we still have not logged in
+            _navMgr.popScreen();
+          }
+        });
       });
     }
   }
@@ -110,8 +109,8 @@ class CreateCompetitionScreenBloc {
           description: viewModel.description,
           duration: viewModel.selectedEndDate.difference(DateTime.now()).inMilliseconds,
           prizeValue: double.parse(viewModel.prizeValue),
-          creatorDisplayName: _authMgr.currentUser.displayName ?? _authMgr.currentUser.email,
-          creatorId: _authMgr.currentUser.uid,
+          creatorDisplayName: _authMgr.currentUserDetails.value.userDisplayName,
+          creatorId: _authMgr.currentUserDetails.value.id,
           coinSymbol: viewModel.coinSymbol);
 
       _repository.createNewCompetition(newComp);

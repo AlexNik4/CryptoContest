@@ -1,3 +1,4 @@
+import 'package:crypto_contest/models/user_profile_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
@@ -6,26 +7,20 @@ import 'package:rxdart/rxdart.dart';
 class AuthenticationMgr {
   final _auth = FirebaseAuth.instance;
   final _subscriptions = CompositeSubscription();
-  FirebaseUser _currentUser;
+  FirebaseUser _currentFirebaseUser;
 
   // Subjects
-  // TODO : Alex - Use my own model here!! Check for nulls since the Firebase user is null on init
-  final _currentUserSubject = BehaviorSubject<FirebaseUser>.seeded(null);
+  final _currentUserSubject = BehaviorSubject<UserProfileModel>.seeded(UserProfileModel());
 
   // Public details
-  Observable<FirebaseUser> get currentUserDetails => _currentUserSubject.stream;
-  FirebaseUser get currentUser => _currentUser;
-  bool get isLoggedIn => _currentUser != null;
-
-  // TODO : Alex - Only use the observable
-  void _onUserUpdated(FirebaseUser user) {
-    _currentUser = user;
-    _currentUserSubject.add(user);
-  }
+  ValueObservable<UserProfileModel> get currentUserDetails => _currentUserSubject.stream;
+  bool get isLoggedIn => _currentFirebaseUser != null;
 
   /// Constructor
   AuthenticationMgr() {
-    _subscriptions.add(_auth.onAuthStateChanged.listen(_onUserUpdated));
+    _subscriptions.add(_auth.onAuthStateChanged.listen((newUser) {
+      _setCurentUser(newUser);
+    }));
   }
 
   /// Register a new user with the given username and password
@@ -64,14 +59,14 @@ class AuthenticationMgr {
   }
 
   Future<void> updateUserInformation(String displayName) async {
-    if (_currentUser != null) {
+    if (_currentFirebaseUser != null) {
       UserUpdateInfo updateInfo = UserUpdateInfo();
       updateInfo.displayName = displayName;
       try {
-        await _currentUser.updateProfile(updateInfo);
-        _currentUser.reload();
+        await _currentFirebaseUser.updateProfile(updateInfo);
+        _currentFirebaseUser.reload();
         // https://github.com/flutter/flutter/issues/20390
-        _currentUser = await _auth.currentUser();
+        _setCurentUser(await _auth.currentUser());
       } catch (e) {
         print(e.toString());
       }
@@ -86,6 +81,15 @@ class AuthenticationMgr {
   /// Dipose
   void dispose() {
     _subscriptions.dispose();
+  }
+
+  void _setCurentUser(FirebaseUser user) {
+    _currentFirebaseUser = user;
+    if (user == null) {
+      _currentUserSubject.add(UserProfileModel());
+    } else {
+      _currentUserSubject.add(UserProfileModel.fromFirebaseUser(user));
+    }
   }
 }
 

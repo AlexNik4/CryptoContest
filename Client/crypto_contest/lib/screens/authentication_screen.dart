@@ -74,6 +74,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
     );
 
     var progressAndResult = StreamBuilder<AuthResultState>(
+      initialData: _bloc.authResultState.value,
       stream: _bloc.authResultState,
       builder: (context, snapshot) {
         return Stack(

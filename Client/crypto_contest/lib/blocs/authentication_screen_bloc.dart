@@ -25,7 +25,7 @@ class AuthenticationScreenBloc {
   String email;
   String password;
   String userDisplayName;
-  Observable<AuthResultState> get authResultState => _authenticationResultSubject.stream;
+  ValueObservable<AuthResultState> get authResultState => _authenticationResultSubject.stream;
 
   // Public interface
   /// Flip between the registration and login card
