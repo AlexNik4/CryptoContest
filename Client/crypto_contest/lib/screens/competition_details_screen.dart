@@ -1,19 +1,19 @@
 import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:flutter/material.dart';
 
-class CompetitionDetailsScreen extends StatefulWidget {
-  _CompetitionDetailsScreenState createState() => _CompetitionDetailsScreenState();
-}
+/// Displays the details for a single competition
+class CompetitionDetailsScreen extends StatelessWidget {
+  final Competition _competition;
 
-class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen> {
+  CompetitionDetailsScreen(this._competition);
+
   @override
   Widget build(BuildContext context) {
-    final Competition competition = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(competition.title),
+        title: Text(_competition.title),
       ),
+      body: Hero(tag: _competition.id, child: Container()),
     );
   }
 }

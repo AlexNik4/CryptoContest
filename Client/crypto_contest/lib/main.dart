@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       home: CompetitionsScreen(),
-      routes: navMgr.routes,
+      initialRoute: navMgr.initialRoute,
       navigatorKey: navMgr.navigatorKey,
-      onUnknownRoute: navMgr.unknownRoute,
+      onGenerateRoute: navMgr.onGenerateRoute,
       theme: myTheme,
     );
   }
