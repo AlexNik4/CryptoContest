@@ -1,3 +1,5 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 import 'app_theme.dart';
 import 'managers/authentication_mgr.dart';
 import 'respositories/competition_respository.dart';
@@ -7,6 +9,15 @@ import 'package:get_it/get_it.dart';
 import 'managers/navigation_mgr.dart';
 
 void main() {
+  // Set `enableInDevMode` to true to see reports while in debug mode
+  // This is only to be used for confirming that reports are being
+  // submitted as expected. It is not intended to be used for everyday
+  // development.
+  // Crashlytics.instance.enableInDevMode = true;
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
   // Register dependency injection
   GetIt.I.registerSingleton<AuthenticationMgr>(AuthenticationMgr());
   GetIt.I.registerLazySingleton<CompetitionRepository>(() => CompetitionRepository());
