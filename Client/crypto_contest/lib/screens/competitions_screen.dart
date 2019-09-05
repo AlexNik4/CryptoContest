@@ -68,7 +68,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
           if (snapshot.hasData) {
             return GridView.builder(
               itemBuilder: (context, position) {
-                return CompetitionItemWidget(snapshot.data[position]);
+                return CompetitionItemWidget(snapshot.data[position], useHero: true);
               },
               itemCount: snapshot.data.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),

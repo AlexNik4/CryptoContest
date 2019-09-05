@@ -10,7 +10,9 @@ class CompetitionItemWidget extends StatelessWidget {
   final Competition _competition;
   final GlobalKey _key = GlobalKey();
 
-  CompetitionItemWidget(this._competition);
+  final bool useHero;
+
+  CompetitionItemWidget(this._competition, {this.useHero = false});
 
   Alignment _getAlignedLocation(BuildContext context) {
     final RenderBox renderBox = _key.currentContext.findRenderObject();
@@ -30,75 +32,80 @@ class CompetitionItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: Hero(
-        key: _key,
-        tag: _competition.id,
-        child: Card(
-          child: Stack(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    var primaryBody = Card(
+      child: Stack(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          _competition.creatorDisplayName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 0,
-                        child: const SizedBox(),
-                      ),
-                      Text(
-                        _competition.prizeValue.toString(),
-                        style: const TextStyle(
-                            color: Colors.green, fontWeight: FontWeight.bold, fontSize: 17),
-                      ),
-                      Text(_competition.coinSymbol)
-                    ],
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      _competition.creatorDisplayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 0,
+                    child: const SizedBox(),
                   ),
                   Text(
-                    _competition.title,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    _competition.prizeValue.toString(),
+                    style: const TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold, fontSize: 17),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-                    const Icon(
-                      Icons.group,
-                      color: Colors.blueAccent,
-                      size: 19,
-                    ),
-                    Text(
-                      _competition.followerCount.toString(),
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ])
+                  Text(_competition.coinSymbol)
                 ],
               ),
-            ),
-            Positioned.fill(
-                child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      highlightColor: const Color(0x44ff9933),
-                      splashColor: const Color(0x44ff8000),
-                      onTap: () {
-                        GetIt.I.get<NavigationMgr>().navigateToCompetitionDetailsScreen(
-                            _competition,
-                            animationStartAlignment: _getAlignedLocation(context));
-                      },
-                    )))
-          ]),
+              Text(
+                _competition.title,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+                const Icon(
+                  Icons.group,
+                  color: Colors.blueAccent,
+                  size: 19,
+                ),
+                Text(
+                  _competition.followerCount.toString(),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ])
+            ],
+          ),
         ),
-      ),
+        Positioned.fill(
+            child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  highlightColor: const Color(0x44ff9933),
+                  splashColor: const Color(0x44ff8000),
+                  onTap: () {
+                    GetIt.I.get<NavigationMgr>().navigateToCompetitionDetailsScreen(_competition,
+                        animationStartAlignment: _getAlignedLocation(context));
+                  },
+                )))
+      ]),
+    );
+
+    Widget _getParentWidget() {
+      if (useHero) {
+        return Hero(key: _key, tag: _competition.id, child: primaryBody);
+      }
+      return primaryBody;
+    }
+
+    // Main build method
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: _getParentWidget(),
     );
   }
 }
