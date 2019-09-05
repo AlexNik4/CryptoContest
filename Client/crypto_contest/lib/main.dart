@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'app_theme.dart';
@@ -18,11 +20,14 @@ void main() {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  // Register dependency injection
-  GetIt.I.registerSingleton<AuthenticationMgr>(AuthenticationMgr());
-  GetIt.I.registerLazySingleton<CompetitionRepository>(() => CompetitionRepository());
-  GetIt.I.registerLazySingleton<NavigationMgr>(() => NavigationMgr());
-  runApp(MyApp());
+  runZoned<Future<void>>(() async {
+    // Register dependency injection
+    GetIt.I.registerSingleton<AuthenticationMgr>(AuthenticationMgr());
+    GetIt.I.registerLazySingleton<CompetitionRepository>(() => CompetitionRepository());
+    GetIt.I.registerLazySingleton<NavigationMgr>(() => NavigationMgr());
+
+    runApp(MyApp());
+  }, onError: Crashlytics.instance.recordError);
 }
 
 class MyApp extends StatelessWidget {
