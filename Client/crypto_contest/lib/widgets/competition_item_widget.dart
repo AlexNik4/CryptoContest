@@ -12,7 +12,8 @@ class CompetitionItemWidget extends StatelessWidget {
 
   final bool useHero;
 
-  CompetitionItemWidget(this._competition, {this.useHero = false});
+  /// Constructor
+  CompetitionItemWidget(this._competition, {Key key, this.useHero = false}) : super(key: key);
 
   Alignment _getAlignedLocation(BuildContext context) {
     final RenderBox renderBox = _key.currentContext.findRenderObject();
