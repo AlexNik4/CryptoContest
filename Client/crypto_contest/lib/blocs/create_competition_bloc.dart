@@ -1,4 +1,5 @@
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/helpers/enums.dart';
 import 'package:crypto_contest/managers/authentication_mgr.dart';
 import 'package:crypto_contest/managers/navigation_mgr.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
@@ -9,17 +10,12 @@ import 'package:get_it/get_it.dart';
 
 /// The business logic and components for the CreateCompetitionScreen
 class CreateCompetitionScreenBloc {
-  // TODO : Alex - Change to enum
-  static const communityVotedCompetition = 0;
-  static const creatorDecidedCompetition = 1;
-  static const giveawayCompetition = 2;
-
   final _authMgr = GetIt.I.get<AuthenticationMgr>();
   final _repository = GetIt.I.get<CompetitionRepository>();
   final _navMgr = GetIt.I.get<NavigationMgr>();
 
   final formKey = GlobalKey<FormState>();
-  final numberOfCompetitionModes = 3;
+  final numberOfCompetitionModes = CompetitionTypes.values.length;
 
   CreateCompetitionViewModel viewModel = CreateCompetitionViewModel();
 
@@ -63,26 +59,28 @@ class CreateCompetitionScreenBloc {
     return null;
   }
 
-  String getSelectModeText(int selectedValue) {
-    switch (selectedValue) {
-      case communityVotedCompetition:
+  String getSelectModeText(int enumIndex) {
+    final competitionType = CompetitionTypes.values[enumIndex];
+    switch (competitionType) {
+      case CompetitionTypes.communityVoted:
         return "Community";
-      case creatorDecidedCompetition:
+      case CompetitionTypes.creatorDecided:
         return "You";
-      case giveawayCompetition:
+      case CompetitionTypes.giveaway:
         return "Giveaway";
       default:
         return null;
     }
   }
 
-  IconData getSelectModeIcon(int selectedValue) {
-    switch (selectedValue) {
-      case communityVotedCompetition:
+  IconData getSelectModeIcon(int enumIndex) {
+    final competitionType = CompetitionTypes.values[enumIndex];
+    switch (competitionType) {
+      case CompetitionTypes.communityVoted:
         return Icons.group;
-      case creatorDecidedCompetition:
+      case CompetitionTypes.creatorDecided:
         return Icons.person;
-      case giveawayCompetition:
+      case CompetitionTypes.giveaway:
         return Icons.card_giftcard;
       default:
         return null;

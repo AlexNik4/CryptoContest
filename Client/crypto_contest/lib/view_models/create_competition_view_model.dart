@@ -1,7 +1,9 @@
+import 'package:crypto_contest/helpers/enums.dart';
+
 class CreateCompetitionViewModel {
   String title;
   String description;
-  int selectedCompetitionMode = 0;
+  CompetitionTypes selectedCompetitionMode = CompetitionTypes.communityVoted;
   DateTime selectedEndDate = DateTime.now().add(Duration(days: 1));
   String prizeValue;
   String coinSymbol;

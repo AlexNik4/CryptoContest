@@ -1,4 +1,5 @@
 import 'package:crypto_contest/blocs/create_competition_bloc.dart';
+import 'package:crypto_contest/helpers/enums.dart';
 import 'package:flutter/material.dart';
 
 class CreateCompetitionScreen extends StatefulWidget {
@@ -106,11 +107,13 @@ class _CreateCompetitionScreenState extends State<CreateCompetitionScreen>
                           child: ChoiceChip(
                             avatar: Icon(_bloc.getSelectModeIcon(index)),
                             label: Text(_bloc.getSelectModeText(index)),
-                            selected: _bloc.viewModel.selectedCompetitionMode == index,
+                            selected: _bloc.viewModel.selectedCompetitionMode ==
+                                CompetitionTypes.values[index],
                             onSelected: (bool selected) {
                               setState(() {
                                 // TODO : Alex - Use enums
-                                _bloc.viewModel.selectedCompetitionMode = selected ? index : null;
+                                _bloc.viewModel.selectedCompetitionMode =
+                                    selected ? CompetitionTypes.values[index] : null;
                               });
                             },
                           ),
