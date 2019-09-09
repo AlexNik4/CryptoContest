@@ -51,6 +51,7 @@ class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen>
             headerSliverBuilder: (BuildContext context, bool innerViewIsScrolled) {
               return <Widget>[
                 SliverAppBar(
+                  iconTheme: IconThemeData(color: Colors.black),
                   expandedHeight: topSliverHeight,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.pin,

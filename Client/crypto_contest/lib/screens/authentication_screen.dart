@@ -213,6 +213,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                       bottomLeft: const Radius.circular(40.0),
                       bottomRight: const Radius.circular(40.0))),
             ),
+            BackButton(
+              color: Colors.white,
+            ),
             // Login area
             Padding(
               padding: EdgeInsets.only(

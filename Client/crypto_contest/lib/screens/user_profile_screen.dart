@@ -37,45 +37,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             }
             return Scaffold(
               body: SingleChildScrollView(
-                child: Column(
+                child: Stack(
                   children: <Widget>[
-                    Container(
-                      width: double.infinity,
-                      color: snapshot.data.userPrimaryColor,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Icon(
-                            Icons.person_pin,
-                            size: 100,
-                          ),
-                          Text(
-                            snapshot.data.userDisplayName,
-                            style: TextStyle(color: Colors.black, fontSize: 24),
-                          ),
-                          Text(
-                            snapshot.data.userEmail,
-                            style: TextStyle(color: const Color(0xff4d4d4d), fontSize: 18),
-                          ),
-                          TextFormField(),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: RaisedButton(
-                            child: const Text('LOG OFF', style: const TextStyle(fontSize: 22)),
-                            color: snapshot.data.userPrimaryColor,
-                            onPressed: _bloc.logOffUser,
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          width: double.infinity,
+                          color: snapshot.data.userPrimaryColor,
+                          child: Column(
+                            children: <Widget>[
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Icon(
+                                Icons.person_pin,
+                                size: 100,
+                              ),
+                              Text(
+                                snapshot.data.userDisplayName,
+                                style: TextStyle(color: Colors.black, fontSize: 24),
+                              ),
+                              Text(
+                                snapshot.data.userEmail,
+                                style: TextStyle(color: const Color(0xff4d4d4d), fontSize: 18),
+                              ),
+                              TextFormField(),
+                            ],
                           ),
                         ),
-                      ),
+                        Container(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: RaisedButton(
+                                child: const Text('LOG OFF', style: const TextStyle(fontSize: 22)),
+                                color: snapshot.data.userPrimaryColor,
+                                onPressed: _bloc.logOffUser,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    SafeArea(
+                        child: BackButton(
+                      color: Colors.black,
+                    )),
                   ],
                 ),
               ),
