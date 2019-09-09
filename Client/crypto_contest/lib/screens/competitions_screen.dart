@@ -42,6 +42,11 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
 
   @override
   Widget build(BuildContext context) {
+    int gridCount = (MediaQuery.of(context).size.width / 180).floor();
+    if (gridCount == 0) {
+      gridCount = 1;
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xffe6e6e6),
       appBar: AppBar(
@@ -71,7 +76,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> with WidgetsBin
                 return CompetitionItemWidget(snapshot.data[position], useHero: true);
               },
               itemCount: snapshot.data.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridCount),
             );
           } else {
             return Center(child: const CircularProgressIndicator());
