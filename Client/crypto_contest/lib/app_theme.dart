@@ -137,7 +137,7 @@ final ThemeData myTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     button: const TextStyle(
-      color: const Color(0xdd000000),
+      color: const Color(0xff000000),
       fontSize: 14.0,
       fontWeight: FontWeight.w500,
       fontStyle: FontStyle.normal,

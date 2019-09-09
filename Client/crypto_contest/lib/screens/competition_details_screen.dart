@@ -116,7 +116,7 @@ class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen>
             },
             body: TabBarView(
               children: <Widget>[
-                CompetitionInstructionsWidget(widget.competition.id),
+                CompetitionInstructionsWidget(widget.competition),
                 Container(
                   color: Colors.blue,
                 ),
@@ -124,13 +124,21 @@ class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen>
               controller: _tabController,
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _bloc.enterCompetition,
-            child: Icon(
-              Icons.add_box,
-              color: Colors.white,
-            ),
-          ),
+          floatingActionButton: StreamBuilder<bool>(
+              stream: _bloc.isCompetitionCreator,
+              initialData: _bloc.isCompetitionCreator.value,
+              builder: (context, snapshot) {
+                if (snapshot.data) {
+                  return SizedBox();
+                }
+                return FloatingActionButton(
+                  onPressed: _bloc.enterCompetition,
+                  child: Icon(
+                    Icons.add_box,
+                    color: Colors.white,
+                  ),
+                );
+              }),
         ),
       ),
     );
