@@ -102,7 +102,7 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
               margin: const EdgeInsets.all(8.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
+                child: SelectableText(
                   description,
                   textAlign: TextAlign.left,
                   style: const TextStyle(fontSize: 18),
@@ -184,7 +184,7 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
                     margin: const EdgeInsets.all(8.0),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
+                      child: SelectableText(
                         details.creatorUpdates[index],
                         style: const TextStyle(fontSize: 18),
                       ),
