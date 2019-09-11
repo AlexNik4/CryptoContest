@@ -27,10 +27,12 @@ class CompetitionInstructionsBloc {
         .map((doc) => CompetitionDetails.fromMap(doc.data, doc.documentID))
         .toList();
 
-    _detailsSubject.add(details.first);
+    if (details.length > 0) {
+      _detailsSubject.add(details.first);
 
-    if (_authMgr.currentUserDetails.value.id == _competition.creatorId) {
-      _competitionCreatorSubject.add(true);
+      if (_authMgr.currentUserDetails.value.id == _competition.creatorId) {
+        _competitionCreatorSubject.add(true);
+      }
     }
   }
 
@@ -39,6 +41,8 @@ class CompetitionInstructionsBloc {
     _disposables.add(
         _repository.getCompetitionDetails(_competition.id).snapshots().listen(_handleSnapshot));
   }
+
+  void addInstructionsUpdate() {}
 
   /// Dispose
   void dispose() {

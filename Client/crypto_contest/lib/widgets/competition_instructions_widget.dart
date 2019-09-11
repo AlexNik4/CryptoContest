@@ -50,6 +50,7 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
             ),
             actions: <Widget>[
               FlatButton(
+                onPressed: Navigator.of(context).pop,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minWidth: 60),
                   child: Center(
@@ -59,11 +60,9 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
                     ),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
               ),
               RaisedButton(
+                onPressed: _bloc.addInstructionsUpdate,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minWidth: 80),
                   child: Center(
@@ -73,9 +72,6 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
                     ),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
               ),
             ],
           );
