@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
 import 'package:crypto_contest/database_schema/competition_details.dart';
 import 'package:crypto_contest/managers/authentication_mgr.dart';
+import 'package:crypto_contest/managers/navigation_mgr.dart';
 import 'package:crypto_contest/respositories/competition_respository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,7 +43,15 @@ class CompetitionInstructionsBloc {
         _repository.getCompetitionDetails(_competition.id).snapshots().listen(_handleSnapshot));
   }
 
-  void addInstructionsUpdate() {}
+  void addInstructionsUpdate(String update) async {
+    // TODO : Alex - Show indicator and other reactive UI updates
+    if (_detailsSubject.hasValue) {
+      List<String> instructionUpdates = _detailsSubject.value.creatorUpdates;
+      instructionUpdates.add(update);
+      await _repository.setCompetitionInstructionUpdates(_competition, instructionUpdates);
+    }
+    GetIt.I.get<NavigationMgr>().popScreen();
+  }
 
   /// Dispose
   void dispose() {

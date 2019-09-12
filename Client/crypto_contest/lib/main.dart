@@ -20,6 +20,10 @@ void main() {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
+  // TODO : Alex - Remove if this is no longer necessary
+  // https://groups.google.com/forum/#!msg/flutter-announce/sHAL2fBtJ1Y/mGjrKH3dEwAJ
+  WidgetsFlutterBinding.ensureInitialized();
+
   runZoned<Future<void>>(() async {
     // Register dependency injection
     GetIt.I.registerSingleton<AuthenticationMgr>(AuthenticationMgr());

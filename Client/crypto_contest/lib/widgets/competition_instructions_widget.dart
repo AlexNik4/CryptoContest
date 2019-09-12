@@ -15,6 +15,7 @@ class CompetitionInstructionsWidget extends StatefulWidget {
 }
 
 class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsWidget> {
+  final _textController = TextEditingController();
   CompetitionInstructionsBloc _bloc;
 
   @override
@@ -42,7 +43,8 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  TextFormField(
+                  TextField(
+                    controller: _textController,
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -62,7 +64,7 @@ class _CompetitionInstructionsWidgetState extends State<CompetitionInstructionsW
                 ),
               ),
               RaisedButton(
-                onPressed: _bloc.addInstructionsUpdate,
+                onPressed: () => _bloc.addInstructionsUpdate(_textController.text),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minWidth: 80),
                   child: Center(

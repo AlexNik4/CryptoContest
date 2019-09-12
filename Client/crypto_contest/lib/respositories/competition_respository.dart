@@ -23,7 +23,20 @@ class CompetitionRepository {
   }
 
   /// Create the new given competition
-  void createNewCompetition(Competition newComp) {
-    _db.collection(DbNames.competitionsCollection).add(newComp.toMap());
+  void createNewCompetition(Competition newComp) async {
+    await _db.collection(DbNames.competitionsCollection).add(newComp.toMap());
+  }
+
+  /// Update the instructions for the competition
+  Future<void> setCompetitionInstructionUpdates(
+      Competition competition, List<String> updates) async {
+    await _db
+        .collection(DbNames.competitionsCollection)
+        .document(competition.id)
+        .collection(DbNames.competitionDetailsCollection)
+        .document("Details")
+        .updateData({
+      "creatorUpdates": updates,
+    });
   }
 }
