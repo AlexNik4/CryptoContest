@@ -1,5 +1,6 @@
 import 'package:crypto_contest/blocs/competition_details_screen_bloc.dart';
 import 'package:crypto_contest/database_schema/competition.dart';
+import 'package:crypto_contest/widgets/competition_contestants_widget.dart';
 import 'package:crypto_contest/widgets/competition_instructions_widget.dart';
 import 'package:crypto_contest/widgets/competition_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -117,9 +118,7 @@ class _CompetitionDetailsScreenState extends State<CompetitionDetailsScreen>
             body: TabBarView(
               children: <Widget>[
                 CompetitionInstructionsWidget(widget.competition),
-                Container(
-                  color: Colors.blue,
-                ),
+                CompetitionContestantsWidget(widget.competition),
               ],
               controller: _tabController,
             ),
